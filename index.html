@@ -91,12 +91,8 @@
       integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
       crossorigin="anonymous"
     ></script>
-    <script type="module" src="script.js">
-      const token = getCookie('hexVueToken');
-      if (!token) {
-        console.log(12345);
-        window.location.href = "login.html"; // 重定向到 login.html
-      }
-    </script>
+    <script src="checkToken.js"></script>
+
+    <script type="module" src="script.js"></script>
   </body>
 </html>
