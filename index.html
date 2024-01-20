@@ -17,7 +17,9 @@
     <div id="app">
       <div class="container">
         <div class="text-end mt-4">
-          <button class="btn btn-primary">建立新的產品</button>
+          <button @click="showAddProductModal" class="btn btn-primary">
+            建立新的產品
+          </button>
         </div>
         <table class="table mt-4">
           <thead>
@@ -34,6 +36,13 @@
             <tr v-for="product in products" :key="product.id">
               <td>{{product.category}}</td>
               <td>{{product.title}}</td>
+              <td>
+                <img
+                  style="width: 100px; height: 160px"
+                  :src="product.imageUrl"
+                  alt=""
+                />
+              </td>
               <td>{{product.origin_price}}</td>
               <td>{{product.price}}</td>
               <td>
@@ -89,6 +98,7 @@
                         >輸入圖片網址</label
                       >
                       <input
+                        v-model="newProducts.data.imageUrl"
                         type="text"
                         class="form-control"
                         placeholder="請輸入圖片連結"
@@ -113,6 +123,7 @@
                   <div class="mb-3">
                     <label for="title" class="form-label">標題</label>
                     <input
+                      v-model="newProducts.data.title"
                       id="title"
                       type="text"
                       class="form-control"
@@ -124,6 +135,7 @@
                     <div class="mb-3 col-md-6">
                       <label for="category" class="form-label">分類</label>
                       <input
+                        v-model="newProducts.data.category"
                         id="category"
                         type="text"
                         class="form-control"
@@ -133,6 +145,7 @@
                     <div class="mb-3 col-md-6">
                       <label for="price" class="form-label">單位</label>
                       <input
+                        v-model="newProducts.data.unit"
                         id="unit"
                         type="text"
                         class="form-control"
@@ -145,6 +158,7 @@
                     <div class="mb-3 col-md-6">
                       <label for="origin_price" class="form-label">原價</label>
                       <input
+                        v-model="newProducts.data.origin_price"
                         id="origin_price"
                         type="number"
                         min="0"
@@ -155,6 +169,7 @@
                     <div class="mb-3 col-md-6">
                       <label for="price" class="form-label">售價</label>
                       <input
+                        v-model="newProducts.data.price"
                         id="price"
                         type="number"
                         min="0"
@@ -168,6 +183,7 @@
                   <div class="mb-3">
                     <label for="description" class="form-label">產品描述</label>
                     <textarea
+                      v-model="newProducts.data.discription"
                       id="description"
                       type="text"
                       class="form-control"
@@ -178,7 +194,8 @@
                   <div class="mb-3">
                     <label for="content" class="form-label">說明內容</label>
                     <textarea
-                      id="description"
+                      v-model="newProducts.data.content"
+                      id="content"
                       type="text"
                       class="form-control"
                       placeholder="請輸入說明內容"
@@ -188,6 +205,7 @@
                   <div class="mb-3">
                     <div class="form-check">
                       <input
+                        v-model="newProducts.data.is_enabled"
                         id="is_enabled"
                         class="form-check-input"
                         type="checkbox"
@@ -210,7 +228,14 @@
               >
                 取消
               </button>
-              <button type="button" class="btn btn-primary">確認</button>
+              <button
+                @keyup.enter="addProduct"
+                @click="addProduct"
+                type="button"
+                class="btn btn-primary"
+              >
+                確認
+              </button>
             </div>
           </div>
         </div>
