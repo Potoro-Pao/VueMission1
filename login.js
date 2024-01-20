@@ -1,7 +1,6 @@
 import { createApp } from "https://unpkg.com/vue@3/dist/vue.esm-browser.js";
 const url = "https://ec-course-api.hexschool.io/v2";
 const path = "potoro";
-const productAPI = `${url}/api/${path}/products/all`;
 const adminLoginAPI = `${url}/admin/signin`;
 const app = createApp({
   data() {

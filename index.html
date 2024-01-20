@@ -26,6 +26,7 @@
             <tr>
               <th width="120">分類</th>
               <th>產品名稱</th>
+              <th>產品圖片</th>
               <th width="120">原價</th>
               <th width="120">售價</th>
               <th width="100">是否啟用</th>
@@ -51,7 +52,11 @@
               </td>
               <td>
                 <div class="btn-group">
-                  <button type="button" class="btn btn-outline-primary btn-sm">
+                  <button
+                    @click="showEditModal(product.id)"
+                    type="button"
+                    class="btn btn-outline-primary btn-sm"
+                  >
                     編輯
                   </button>
                   <button
@@ -229,8 +234,8 @@
                 取消
               </button>
               <button
-                @keyup.enter="addProduct"
-                @click="addProduct"
+                @keyup.enter="isEditing ? editProduct() : addProduct()"
+                @click="isEditing ? editProduct() : addProduct()"
                 type="button"
                 class="btn btn-primary"
               >

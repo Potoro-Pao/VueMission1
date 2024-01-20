@@ -6,7 +6,8 @@ const app = {
       apiUrl: "https://vue3-course-api.hexschool.io/v2",
       apiPath: "potoro",
       products: [],
-      tempProduct: {},
+      isEditing: false,
+      editingId: null,
       selectedProduct: null,
       newProducts: {
         data: {
@@ -44,6 +45,9 @@ const app = {
         });
     },
     showAddProductModal() {
+      this.isEditing = false;
+
+      this.resetNewProduct();
       this.myModal.show();
     },
     resetNewProduct() {
@@ -68,7 +72,7 @@ const app = {
         !this.newProducts.data.price;
 
       if (hasNoProduct) {
-        console.log("Product information is incomplete");
+        alert("Product information is incomplete");
         this.myModal.hide();
         return;
       } else {
@@ -109,17 +113,37 @@ const app = {
         })
         .catch((err) => console.log(err));
     },
+    showEditModal(id) {
+      this.isEditing = true;
+      this.myModal.show();
+      const targetId = this.products.findIndex((product) => product.id === id);
+      this.newProducts.data = { ...this.products[targetId] };
+      this.editingId = id;
+    },
+    editProduct() {
+      const url = `${this.apiUrl}/api/${this.apiPath}/admin/product/${this.editingId}`;
+      axios
+        .put(url, this.newProducts)
+        .then((res) => {
+          this.editingId = null;
+          this.getProducts();
+          this.myModal.hide();
+        })
+        .catch((err) => {
+          console.log(err.data.message);
+        });
+    },
   },
   mounted() {
+    this.myModal = new bootstrap.Modal(document.getElementById("productModal"));
+
     const token = document.cookie.replace(
       /(?:(?:^|.*;\s*)hexVueToken\s*=\s*([^;]*).*$)|^.*$/,
       "$1"
     );
     axios.defaults.headers.common.Authorization = token;
-    console.log(token);
 
     this.checkAdmin();
-    this.myModal = new bootstrap.Modal(document.getElementById("productModal"));
   },
 };
 
