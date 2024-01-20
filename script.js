@@ -28,16 +28,31 @@ const app = {
           window.location = "login.html";
         });
     },
+    addProducts() {},
     getProducts() {
       const url = `${this.apiUrl}/api/${this.apiPath}/admin/products`;
       axios
         .get(url)
         .then((res) => {
           this.products = res.data.products;
+          console.log(this.products);
         })
         .catch((err) => {
           alert(err.response.data.message);
         });
+    },
+    deleteProduct(id) {
+      const url = `${this.apiUrl}/api/${this.apiPath}/admin/product/${id}`;
+      // const targetDeleteIndex = this.products.findIndex(
+      //   (product) => product.id === id
+      // );
+      // this.products.splice(targetDeleteIndex, 1);
+      axios
+        .delete(url)
+        .then((res) => {
+          console.log(res.data.message, "id:", id, this.getProducts());
+        })
+        .catch((err) => console.log(err));
     },
   },
   mounted() {
@@ -46,6 +61,7 @@ const app = {
       "$1"
     );
     axios.defaults.headers.common.Authorization = token;
+    console.log(token);
 
     this.checkAdmin();
   },
