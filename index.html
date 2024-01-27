@@ -60,7 +60,7 @@
                     編輯
                   </button>
                   <button
-                    @click="deleteProduct(product.id)"
+                    @click="showDelModal(product.id)"
                     type="button"
                     class="btn btn-outline-danger btn-sm"
                   >
@@ -278,7 +278,13 @@
               >
                 取消
               </button>
-              <button type="button" class="btn btn-danger">確認刪除</button>
+              <button
+                @click="deleteProduct()"
+                type="button"
+                class="btn btn-danger"
+              >
+                確認刪除
+              </button>
             </div>
           </div>
         </div>

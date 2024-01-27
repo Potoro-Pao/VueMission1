@@ -2,12 +2,14 @@ import { createApp } from "https://unpkg.com/vue@3/dist/vue.esm-browser.js";
 const app = {
   data() {
     return {
+      delModal: null,
       myModal: null,
       apiUrl: "https://vue3-course-api.hexschool.io/v2",
       apiPath: "potoro",
       products: [],
       isEditing: false,
       editingId: null,
+      deleteId: null,
       selectedProduct: null,
       newProducts: {
         data: {
@@ -100,18 +102,27 @@ const app = {
           alert(err.response.data.message);
         });
     },
-    deleteProduct(id) {
-      const url = `${this.apiUrl}/api/${this.apiPath}/admin/product/${id}`;
-      // const targetDeleteIndex = this.products.findIndex(
-      //   (product) => product.id === id
-      // );
-      // this.products.splice(targetDeleteIndex, 1);
+    deleteProduct() {
+      const url = `${this.apiUrl}/api/${this.apiPath}/admin/product/${this.deleteId}`;
       axios
         .delete(url)
         .then((res) => {
-          console.log(res.data.message, "id:", id, this.getProducts());
+          console.log(
+            res.data.message,
+            "id:",
+            this.deleteId,
+            this.getProducts()
+          );
+          this.deleteId = null;
+          this.delModal.hide();
         })
         .catch((err) => console.log(err));
+    },
+    showDelModal(id) {
+      console.log(id);
+      this.delModal.show();
+      console.log(id);
+      this.deleteId = id;
     },
     showEditModal(id) {
       this.isEditing = true;
@@ -136,7 +147,7 @@ const app = {
   },
   mounted() {
     this.myModal = new bootstrap.Modal(document.getElementById("productModal"));
-
+    this.delModal = new bootstrap.Modal(this.$refs.delProductModal);
     const token = document.cookie.replace(
       /(?:(?:^|.*;\s*)hexVueToken\s*=\s*([^;]*).*$)|^.*$/,
       "$1"
