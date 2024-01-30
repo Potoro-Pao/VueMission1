@@ -2,8 +2,9 @@ import { createApp } from "https://unpkg.com/vue@3/dist/vue.esm-browser.js";
 const app = {
   data() {
     return {
+      pages: {},
       delModal: null,
-      myModal: null,
+      productModal: null,
       apiUrl: "https://vue3-course-api.hexschool.io/v2",
       apiPath: "potoro",
       products: [],
@@ -28,9 +29,6 @@ const app = {
     };
   },
   methods: {
-    showDetail(details) {
-      this.selectedProduct = details;
-    },
     checkAdmin() {
       const url = `${this.apiUrl}/api/user/check`;
       axios
@@ -40,17 +38,15 @@ const app = {
           this.getProducts();
         })
         .catch((err) => {
-          alert(err.response.data.message);
-          debugger;
-
+          console.log(err);
           window.location = "login.html";
         });
     },
     showAddProductModal() {
-      this.isEditing = false;
-
       this.resetNewProduct();
-      this.myModal.show();
+      this.isEditing = false;
+      // this.newProducts.data.imagesUrl = [""];
+      this.productModal.show();
     },
     resetNewProduct() {
       this.newProducts.data = {
@@ -75,7 +71,7 @@ const app = {
 
       if (hasNoProduct) {
         alert("Product information is incomplete");
-        this.myModal.hide();
+        this.productModal.hide();
         return;
       } else {
         axios
@@ -83,24 +79,31 @@ const app = {
           .then((res) => {
             console.log(res.data.message);
             this.products.push(this.newProducts.data);
-            this.myModal.hide();
+            this.productModal.hide();
             this.resetNewProduct();
             this.getProducts();
           })
           .catch((err) => console.log(err));
       }
     },
-    getProducts() {
-      const url = `${this.apiUrl}/api/${this.apiPath}/admin/products`;
+    getProducts(page = 1) {
+      const url = `${this.apiUrl}/api/${this.apiPath}/admin/products?page=${page}`;
       axios
         .get(url)
         .then((res) => {
           this.products = res.data.products;
-          console.log(this.products);
+          this.pages = res.data.pagination;
+          console.log(this.pages);
         })
         .catch((err) => {
           alert(err.response.data.message);
         });
+    },
+    showDelModal(id) {
+      console.log(id);
+      this.delModal.show();
+      console.log(id);
+      this.deleteId = id;
     },
     deleteProduct() {
       const url = `${this.apiUrl}/api/${this.apiPath}/admin/product/${this.deleteId}`;
@@ -118,18 +121,14 @@ const app = {
         })
         .catch((err) => console.log(err));
     },
-    showDelModal(id) {
-      console.log(id);
-      this.delModal.show();
-      console.log(id);
-      this.deleteId = id;
-    },
-    showEditModal(id) {
+    showEditModal(product) {
       this.isEditing = true;
-      this.myModal.show();
-      const targetId = this.products.findIndex((product) => product.id === id);
-      this.newProducts.data = { ...this.products[targetId] };
-      this.editingId = id;
+      this.productModal.show();
+      this.newProducts.data = { ...product };
+      if (!this.newProducts.data.imagesUrl) {
+        this.newProducts.data.imagesUrl = [""];
+      }
+      this.editingId = product.id;
     },
     editProduct() {
       const url = `${this.apiUrl}/api/${this.apiPath}/admin/product/${this.editingId}`;
@@ -138,15 +137,25 @@ const app = {
         .then((res) => {
           this.editingId = null;
           this.getProducts();
-          this.myModal.hide();
+          this.productModal.hide();
         })
         .catch((err) => {
           console.log(err.data.message);
         });
     },
+    addImages() {
+      if (this.newProducts.data.imagesUrl.includes("")) {
+        return;
+      }
+      console.log(1234);
+      this.newProducts.data.imagesUrl.push("");
+    },
+    deleteImages() {
+      this.newProducts.data.imagesUrl.pop();
+    },
   },
   mounted() {
-    this.myModal = new bootstrap.Modal(document.getElementById("productModal"));
+    this.productModal = new bootstrap.Modal(this.$refs.productModal);
     this.delModal = new bootstrap.Modal(this.$refs.delProductModal);
     const token = document.cookie.replace(
       /(?:(?:^|.*;\s*)hexVueToken\s*=\s*([^;]*).*$)|^.*$/,

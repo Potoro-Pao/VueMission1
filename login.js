@@ -30,7 +30,7 @@ const app = createApp({
         })
         .catch((err) => {
           alert("登入失敗!");
-          window.location = "login.html";
+          // window.location = "login.html";
         });
     },
   },

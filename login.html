@@ -49,10 +49,10 @@
                 <label for="password">Password</label>
               </div>
               <button
-                @click="loginCheck"
+                @submit.prevent="loginCheck"
                 id="loginBtn"
                 class="btn btn-lg btn-primary w-100 mt-3"
-                type="button"
+                type="submit"
               >
                 登入
               </button>

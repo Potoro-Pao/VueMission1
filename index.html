@@ -39,7 +39,7 @@
               <td>{{product.title}}</td>
               <td>
                 <img
-                  style="width: 100px; height: 160px"
+                  style="width: 160px; height: 160px"
                   :src="product.imageUrl"
                   alt=""
                 />
@@ -53,7 +53,7 @@
               <td>
                 <div class="btn-group">
                   <button
-                    @click="showEditModal(product.id)"
+                    @click="showEditModal(product)"
                     type="button"
                     class="btn btn-outline-primary btn-sm"
                   >
@@ -71,6 +71,34 @@
             </tr>
           </tbody>
         </table>
+        <nav aria-label="...">
+          <ul class="pagination">
+            <li class="page-item" :class="{disabled:!pages.has_pre}">
+              <span @click="getProducts(pages.current_page-1)" class="page-link"
+                >Previous</span
+              >
+            </li>
+            <li
+              class="page-item"
+              :class="{active:page === pages.current_page}"
+              v-for="page in pages.total_pages"
+              :key="page+123"
+            >
+              <a @click="getProducts(page)" class="page-link" href="#"
+                >{{page}}</a
+              >
+            </li>
+
+            <li class="page-item" :class="{disabled:!pages.has_next}">
+              <a
+                @click="getProducts(pages.current_page+1)"
+                class="page-link"
+                href="#"
+                >Next</a
+              >
+            </li>
+          </ul>
+        </nav>
       </div>
       <!-- Modal -->
       <div
@@ -109,20 +137,41 @@
                         placeholder="請輸入圖片連結"
                       />
                     </div>
-                    <img class="img-fluid" src="" alt="" />
+                    <img
+                      class="img-fluid"
+                      :src="this.newProducts.data.imageUrl"
+                      alt=""
+                    />
                   </div>
-                  <div>
-                    <button
-                      class="btn btn-outline-primary btn-sm d-block w-100"
-                    >
-                      新增圖片
-                    </button>
+
+                  <div v-if="Array.isArray(this.newProducts.data.imagesUrl)">
+                    <div>
+                      <div
+                        v-for="(img, key) in this.newProducts.data.imagesUrl"
+                        :key="key"
+                      >
+                        <img :src="img" alt="" />
+                        <input
+                          type="text"
+                          class="form-control"
+                          v-model=" this.newProducts.data.imagesUrl[key]"
+                        />
+                      </div>
+                    </div>
                   </div>
-                  <div v-else>
-                    <button class="btn btn-outline-danger btn-sm d-block w-100">
-                      刪除圖片
-                    </button>
-                  </div>
+                  <button
+                    @click="addImages"
+                    class="btn btn-outline-primary btn-sm d-block w-100"
+                  >
+                    新增圖片
+                  </button>
+                  <button
+                    @click="deleteImages"
+                    class="btn btn-outline-danger btn-sm d-block w-100"
+                  >
+                    刪除圖片
+                  </button>
+                  <div v-else></div>
                 </div>
                 <div class="col-sm-8">
                   <div class="mb-3">
