@@ -1,4 +1,5 @@
 import { createApp } from "https://unpkg.com/vue@3/dist/vue.esm-browser.js";
+import pagi from "./components/paginationComponent.js";
 const app = {
   data() {
     return {
@@ -27,6 +28,9 @@ const app = {
         },
       },
     };
+  },
+  components: {
+    pagi,
   },
   methods: {
     checkAdmin() {
