@@ -1,39 +1,31 @@
 import { createApp } from "https://unpkg.com/vue@3/dist/vue.esm-browser.js";
-const url = "https://ec-course-api.hexschool.io/v2";
-const path = "potoro";
-const productAPI = `${url}/api/${path}/products/all`;
-const adminLoginAPI = `${url}/admin/signin`;
-const app = createApp({
+
+createApp({
   data() {
     return {
       user: {
-        account: null,
-        password: null,
+        username: "",
+        password: "",
       },
     };
   },
   methods: {
-    loginCheck() {
-      const user = {
-        username: this.user.account,
-        password: this.user.password,
-      };
+    login() {
+      const api = "https://vue3-course-api.hexschool.io/v2/admin/signin";
       axios
-        .post(adminLoginAPI, user)
-        .then((res) => {
-          const { token, expired } = res.data;
-          document.cookie = `hexVueToken=${token}; expires=${new Date(
+        .post(api, this.user)
+        .then((response) => {
+          const { token, expired } = response.data;
+          // 寫入 cookie token
+          // expires 設置有效時間
+          document.cookie = `hexToken=${token};expires=${new Date(
             expired
-          )}`;
-          // axios.defaults.headers.common["Authorization"] = token;
-          window.location.href = "index.html";
-          alert("恭喜你成功登入了");
+          )}; path=/`;
+          window.location = "index.html";
         })
         .catch((err) => {
-          alert("登入失敗!");
-          window.location = "login.html";
+          alert(err.response.data.message);
         });
     },
   },
-});
-app.mount("#app");
+}).mount("#app");
