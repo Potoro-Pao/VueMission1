@@ -1,50 +1,83 @@
 import { createApp } from "https://unpkg.com/vue@3/dist/vue.esm-browser.js";
 
-createApp({
+const site = "https://vue3-course-api.hexschool.io/v2/";
+const apiPath = "potoro";
+const app = createApp({
   data() {
     return {
-      apiUrl: "https://vue3-course-api.hexschool.io/v2",
-      apiPath: "potoro",
       products: [],
-      tempProduct: {},
+      tempProduct: {
+        imagesUrl: [],
+      },
+      modalProducts: null,
+      modalDel: null,
+      isNew: false,
     };
   },
   methods: {
-    checkAdmin() {
-      const url = `${this.apiUrl}/api/user/check`;
-      axios
-        .post(url)
-        .then(() => {
-          this.getData();
-        })
-        .catch((err) => {
-          alert(err.response.data.message);
-          window.location = "login.html";
-        });
+    getProduct() {
+      const api = `${site}api/${apiPath}/admin/products`;
+      axios.get(api).then((res) => {
+        this.products = res.data.products;
+        console.log(this.products);
+      });
     },
-    getData() {
-      const url = `${this.apiUrl}/api/${this.apiPath}/admin/products`;
-      axios
-        .get(url)
-        .then((response) => {
-          this.products = response.data.products;
-        })
-        .catch((err) => {
-          alert(err.response.data.message);
-        });
+    openModal(status, product) {
+      if (status === "new") {
+        this.tempProduct = {
+          imagesUrl: [],
+        };
+        this.isNew = true;
+        this.modalProducts.show();
+      } else if (status === "edit") {
+        this.tempProduct = { ...product };
+        if (!Array.isArray(this.tempProduct.imagesUrl)) {
+          this.tempProduct.imagesUrl = [];
+        }
+        this.isNew = false;
+        this.modalProducts.show();
+      } else if (status === "delete") {
+        this.tempProduct = { ...product };
+        this.modalDel.show();
+      }
     },
-    openProduct(item) {
-      this.tempProduct = item;
+    updateProduct() {
+      let api = `${site}api/${apiPath}/admin/product`;
+      let method = "post";
+      if (!this.isNew) {
+        api = `${site}api/${apiPath}/admin/product/${this.tempProduct.id}`;
+        method = "put";
+      }
+      axios[method](api, { data: this.tempProduct })
+        .then((res) => {
+          this.products = res.data.products;
+          this.getProduct();
+          this.modalProducts.hide();
+        })
+        .catch((err) => console.log(err));
+    },
+    deleteProduct() {
+      const api = `${site}api/${apiPath}/admin/product/${this.tempProduct.id}`;
+      axios.delete(api, { data: this.tempProduct }).then((res) => {
+        this.products = res.data.products;
+        this.modalDel.hide();
+        this.getProduct();
+        this.tempProduct = {};
+      });
     },
   },
   mounted() {
-    // 取出 Token
     const token = document.cookie.replace(
-      /(?:(?:^|.*;\s*)hexToken\s*=\s*([^;]*).*$)|^.*$/,
+      /(?:(?:^|.*;\s*)hexVueToken\s*=\s*([^;]*).*$)|^.*$/,
       "$1"
     );
     axios.defaults.headers.common.Authorization = token;
 
-    this.checkAdmin();
+    this.getProduct();
+    console.log(this.$refs);
+
+    this.modalProducts = new bootstrap.Modal(this.$refs.productModal);
+    this.modalDel = new bootstrap.Modal(this.$refs.delProductModal);
   },
-}).mount("#app");
+});
+app.mount("#app");
