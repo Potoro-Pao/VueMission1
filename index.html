@@ -63,6 +63,8 @@
           </tr>
         </tbody>
       </table>
+      <pagination :pages="pages" :get-product="getProduct"></pagination>
+
     </div>
     <!-- Modal -->
     <div id=" productModal" ref="productModal" class="modal fade" tabindex="-1" aria-labelledby="productModalLabel"
@@ -162,6 +164,7 @@
         </div>
       </div>
     </div>
+    <deleteModal></deleteModal>
     <div id="delProductModal" ref="delProductModal" class="modal fade" tabindex="-1"
       aria-labelledby="delProductModalLabel" aria-hidden="true">
       <div class="modal-dialog">

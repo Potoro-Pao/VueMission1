@@ -1,5 +1,6 @@
 import { createApp } from "https://unpkg.com/vue@3/dist/vue.esm-browser.js";
-
+import pagination from "./components/pagination.js";
+import deleteModal from "./components/delModal.js";
 const site = "https://vue3-course-api.hexschool.io/v2/";
 const apiPath = "potoro";
 const app = createApp({
@@ -9,17 +10,19 @@ const app = createApp({
       tempProduct: {
         imagesUrl: [],
       },
+      pages: {},
       modalProducts: null,
       modalDel: null,
       isNew: false,
     };
   },
   methods: {
-    getProduct() {
-      const api = `${site}api/${apiPath}/admin/products`;
+    getProduct(page = 1) {
+      const api = `${site}api/${apiPath}/admin/products?page=${page}`;
       axios.get(api).then((res) => {
         this.products = res.data.products;
-        console.log(this.products);
+        this.pages = res.data.pagination;
+        console.log(res);
       });
     },
     openModal(status, product) {
@@ -66,6 +69,7 @@ const app = createApp({
       });
     },
   },
+  components: { pagination, deleteModal },
   mounted() {
     const token = document.cookie.replace(
       /(?:(?:^|.*;\s*)hexVueToken\s*=\s*([^;]*).*$)|^.*$/,
