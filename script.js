@@ -1,6 +1,7 @@
 import { createApp } from "https://unpkg.com/vue@3/dist/vue.esm-browser.js";
-import pagination from "./components/pagination.js";
-import deleteModal from "./components/delModal.js";
+import pagination from "./components/Pagination.js";
+import deleteModal from "./components/DelModal.js";
+import proModal from "./components/ProModal.js";
 const site = "https://vue3-course-api.hexschool.io/v2/";
 const apiPath = "potoro";
 const app = createApp({
@@ -22,7 +23,6 @@ const app = createApp({
       axios.get(api).then((res) => {
         this.products = res.data.products;
         this.pages = res.data.pagination;
-        console.log(res);
       });
     },
     openModal(status, product) {
@@ -31,17 +31,15 @@ const app = createApp({
           imagesUrl: [],
         };
         this.isNew = true;
-        this.modalProducts.show();
+        this.$refs.pModal.openModal();
       } else if (status === "edit") {
-        this.tempProduct = { ...product };
-        if (!Array.isArray(this.tempProduct.imagesUrl)) {
-          this.tempProduct.imagesUrl = [];
-        }
+        this.tempProduct = { ...product, imagesUrl: product.imagesUrl || [] };
+
         this.isNew = false;
-        this.modalProducts.show();
+        this.$refs.pModal.openModal();
       } else if (status === "delete") {
         this.tempProduct = { ...product };
-        this.modalDel.show();
+        this.$refs.dModal.openDeleteModal();
       }
     },
     updateProduct() {
@@ -55,7 +53,7 @@ const app = createApp({
         .then((res) => {
           this.products = res.data.products;
           this.getProduct();
-          this.modalProducts.hide();
+          this.$refs.pModal.closeModal();
         })
         .catch((err) => console.log(err));
     },
@@ -63,25 +61,20 @@ const app = createApp({
       const api = `${site}api/${apiPath}/admin/product/${this.tempProduct.id}`;
       axios.delete(api, { data: this.tempProduct }).then((res) => {
         this.products = res.data.products;
-        this.modalDel.hide();
         this.getProduct();
+        this.$refs.dModal.closeDeleteModal();
         this.tempProduct = {};
       });
     },
   },
-  components: { pagination, deleteModal },
+  components: { pagination, deleteModal, proModal },
   mounted() {
     const token = document.cookie.replace(
       /(?:(?:^|.*;\s*)hexVueToken\s*=\s*([^;]*).*$)|^.*$/,
       "$1"
     );
     axios.defaults.headers.common.Authorization = token;
-
     this.getProduct();
-    console.log(this.$refs);
-
-    this.modalProducts = new bootstrap.Modal(this.$refs.productModal);
-    this.modalDel = new bootstrap.Modal(this.$refs.delProductModal);
   },
 });
 app.mount("#app");
