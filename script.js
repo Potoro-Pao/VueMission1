@@ -38,7 +38,7 @@ const app = createApp({
         this.isNew = false;
         this.$refs.pModal.openModal();
       } else if (status === "delete") {
-        this.tempProduct = { ...product };
+        this.tempProduct = { ...product, imagesUrl: product.imagesUrl || [] };
         this.$refs.dModal.openDeleteModal();
       }
     },
@@ -63,7 +63,9 @@ const app = createApp({
         this.products = res.data.products;
         this.getProduct();
         this.$refs.dModal.closeDeleteModal();
-        this.tempProduct = {};
+        this.tempProduct = {
+          imagesUrl: [],
+        };
       });
     },
   },
