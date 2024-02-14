@@ -46,6 +46,7 @@ const userModal = {
 const app = createApp({
   data() {
     return {
+      isLoading: null,
       user: {
         email: "",
         name: "",
@@ -77,8 +78,10 @@ const app = createApp({
       return result;
     },
     getProducts() {
+      this.isLoading = true;
       axios.get(`${apiUrl}api/${apiPath}/products/all`).then((res) => {
         this.products = res.data.products;
+        this.isLoading = false;
       });
     },
     openModal(product) {
@@ -138,7 +141,7 @@ const app = createApp({
     this.getCart();
   },
 });
-
+app.component("loading", VueLoading.Component);
 app.component("VForm", VeeValidate.Form);
 app.component("VField", VeeValidate.Field);
 app.component("ErrorMessage", VeeValidate.ErrorMessage);
