@@ -19,7 +19,7 @@ const app = createApp({
   },
   methods: {
     getProduct(page = 1) {
-      const api = `${site}api/${apiPath}/admin/products/all?page=${page}`;
+      const api = `${site}api/${apiPath}/admin/products?page=${page}`;
       axios.get(api).then((res) => {
         this.products = res.data.products;
         this.pages = res.data.pagination;

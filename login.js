@@ -18,7 +18,7 @@ createApp({
           const { token, expired } = response.data;
           // 寫入 cookie token
           // expires 設置有效時間
-          document.cookie = `hexToken=${token};expires=${new Date(
+          document.cookie = `hexVueToken=${token};expires=${new Date(
             expired
           )}; path=/`;
           window.location = "index.html";
