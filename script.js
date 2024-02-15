@@ -1,6 +1,6 @@
 import { createApp } from "https://unpkg.com/vue@3/dist/vue.esm-browser.js";
-import pagination from "./components/Pagination.js";
-import deleteModal from "./components/DelModal.js";
+import pagination from "./components/pagination.js";
+import deleteModal from "./components/delModal.js";
 import proModal from "./components/ProModal.js";
 const site = "https://vue3-course-api.hexschool.io/v2/";
 const apiPath = "potoro";
