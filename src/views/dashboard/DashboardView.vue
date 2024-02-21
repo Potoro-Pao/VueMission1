@@ -17,11 +17,10 @@ export default {
   methods: {
     checkAdmin() {
       const url = `${VITE_URL}/api/user/check`;
+
       axios
         .post(url)
-        .then(() => {
-          console.log('驗證成功！');
-        })
+        .then(() => {})
         .catch(() => {
           this.$router.push('/login');
         });

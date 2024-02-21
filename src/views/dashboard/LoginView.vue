@@ -77,10 +77,8 @@ export default {
           this.$router.push('/admin/products');
           // axios.defaults.headers.common["Authorization"] = token;
           //   window.location.href = 'index.html';
-          alert('恭喜你成功登入了');
         })
         .catch(() => {
-          alert('登入失敗!');
           window.location = 'login.html';
         });
     },
