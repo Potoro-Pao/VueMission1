@@ -1,5 +1,6 @@
 <template>
   <loading v-model:active="isLoading"></loading>
+  <div class="container">
   <div class="row">
     <div class="col" style="display: flex; justify-content: center">
       <div>
@@ -66,6 +67,7 @@
       </tr>
     </tbody>
   </table>
+</div>
 </template>
 
 <script>
