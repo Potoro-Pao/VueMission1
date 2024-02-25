@@ -13,7 +13,6 @@
 </template>
 
 <script>
-import MapC from '../components/MapComponent.vue';
 import BgC from '../components/BgComponent.vue';
 import NavC from '../components/NavbarComponent.vue';
 import FooterC from '../components/FooterComponent.vue';
@@ -25,18 +24,9 @@ export default {
     };
   },
   components: {
-    MapC,
     BgC,
     NavC,
     FooterC,
-  },
-  watch: {
-    $route(to) {
-      this.isHome = to.path === '/';
-    },
-  },
-  mounted() {
-    this.isHome = this.$route.path === '/';
   },
 };
 </script>

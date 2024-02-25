@@ -1,40 +1,75 @@
 <template>
   <div ref="mapContainer" style="height: 600px; width: 800px">
-    <p>Vue-Leaflet Demo: Adding Watercolor Layer in mounted</p>
+    <p>Vue-Leaflet Demo: Dynamic Location Update</p>
   </div>
 </template>
 
 <script>
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
+import axios from 'axios';
 
 export default {
+  data() {
+    return {
+      map: null,
+      marker: null,
+      intervalId: null, // 用于存储 setInterval 的 ID
+      country: null,
+      city: null,
+      latitude: null,
+      longitude: null,
+    };
+  },
   mounted() {
-    // 在组件挂载后初始化地图
-    const map = L.map(this.$refs.mapContainer).setView([48.1391, 11.5802], 13);
-
-    // 初始化 watercolor 图层
-    // const watercolor = L.tileLayer(
-    //   'https://stamen-tiles-{s}.a.ssl.fastly.net/watercolor/{z}/{x}/{y}.{ext}',
-    //   {
-    //     attribution:
-    //       'Map tiles by <a href="http://stamen.com">Stamen Design</a>, <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a> &mdash; Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-    //     subdomains: 'abcd',
-    //     minZoom: 1,
-    //     maxZoom: 16,
-    //     ext: 'png',
-    //   },
-    // );
-    const osm = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-    });
-
-    osm.addTo(map);
-    // 添加一个标记
-    const marker = L.marker([48.1391, 11.5802]).addTo(map);
-
-    // 为标记添加一个弹出窗口
-    marker.bindPopup('Johanniskirche, Munich').openPopup();
+    this.getRandom(); // 初始获取一次位置信息
+    this.intervalId = setInterval(this.getRandom, 10000); // 每10秒更新一次位置信息
+  },
+  beforeUnmount() {
+    if (this.intervalId) {
+      clearInterval(this.intervalId); // 组件销毁时清除定时器
+    }
+  },
+  methods: {
+    getRandom() {
+      axios.get('https://randomuser.me/api/').then((res) => {
+        this.country = res.data.results[0].location.country;
+        this.city = res.data.results[0].location.city;
+        // 调用方法获取国家的经纬度
+        this.getCountryCoordinates(this.country);
+      });
+    },
+    // 新增方法：获取国家的经纬度
+    getCountryCoordinates(countryName) {
+      const url = `https://nominatim.openstreetmap.org/search?country=${countryName}&format=json&limit=1`;
+      axios.get(url)
+        .then((response) => {
+          if (response.data && response.data.length > 0) {
+            const { lat, lon } = response.data[0];
+            // 更新经纬度
+            this.latitude = parseFloat(lat);
+            this.longitude = parseFloat(lon);
+            if (!this.map) {
+              this.getMap(); // 如果地图未初始化，则初始化地图
+            } else {
+              this.updateMap(); // 如果地图已初始化，则更新地图视图和标记
+            }
+          }
+        });
+    },
+    getMap() {
+      this.map = L.map(this.$refs.mapContainer).setView([this.latitude, this.longitude], 7);
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+      }).addTo(this.map);
+      this.marker = L.marker([this.latitude, this.longitude]).addTo(this.map);
+      this.marker.bindPopup(`${this.city}, ${this.country}`).openPopup();
+    },
+    updateMap() {
+      this.map.setView([this.latitude, this.longitude], 7);
+      this.marker.setLatLng([this.latitude, this.longitude]);
+      this.marker.getPopup().setContent(`${this.city}, ${this.country}`).openPopup();
+    },
   },
 };
 </script>
