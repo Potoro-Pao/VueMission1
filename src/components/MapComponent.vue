@@ -1,5 +1,5 @@
 <template>
-  <div ref="mapContainer" style="height: 600px; width: 800px">
+  <div ref="mapContainer" style="height: 300px; width: 400px">
     <p>Vue-Leaflet Demo: Dynamic Location Update</p>
   </div>
 </template>
@@ -58,7 +58,7 @@ export default {
         });
     },
     getMap() {
-      this.map = L.map(this.$refs.mapContainer).setView([this.latitude, this.longitude], 7);
+      this.map = L.map(this.$refs.mapContainer).setView([this.latitude, this.longitude], 8);
       L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
       }).addTo(this.map);
@@ -66,7 +66,7 @@ export default {
       this.marker.bindPopup(`${this.city}, ${this.country}`).openPopup();
     },
     updateMap() {
-      this.map.setView([this.latitude, this.longitude], 7);
+      this.map.setView([this.latitude, this.longitude], 8);
       this.marker.setLatLng([this.latitude, this.longitude]);
       this.marker.getPopup().setContent(`${this.city}, ${this.country}`).openPopup();
     },
