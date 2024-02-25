@@ -92,6 +92,7 @@
       </div>
     </div>
   </div>
+ <MapC></MapC>
   <!--footer!-->
   <div class="bg-dark py-3">
     <div class="container">
@@ -130,3 +131,15 @@
     </div>
   </div>
 </template>
+
+<script>
+import MapC from '../components/MapComponent.vue';
+
+export default {
+  components: {
+    MapC,
+  },
+
+};
+
+</script>
