@@ -20,6 +20,10 @@ const routes = [
         component: () => import('../views/ProductsView.vue'),
       },
       {
+        path: 'product',
+        component: () => import('../views/DetailsView.vue'),
+      },
+      {
         path: 'cart',
         component: () => import('../views/CartView.vue'),
       },
