@@ -5,7 +5,6 @@
   </div>
   <div class="cotainer">
     <div class="row">
-      <div class="col"><MapC v-if="isHome"></MapC></div>
     </div>
   </div>
   <!--footer!-->
