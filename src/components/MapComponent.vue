@@ -1,5 +1,5 @@
 <template>
-  <div ref="mapContainer" style="height: 300px; width: 400px">
+  <div ref="mapContainer">
     <p>Vue-Leaflet Demo: Dynamic Location Update</p>
   </div>
 </template>

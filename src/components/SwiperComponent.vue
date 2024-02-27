@@ -30,8 +30,7 @@
 </template>
 <script>
 import { Swiper, SwiperSlide } from 'swiper/vue';
-import { Navigation, Pagination } from 'swiper';
-
+import { Navigation, Pagination } from 'swiper/modules';
 // Import Swiper styles
 import 'swiper/css';
 import 'swiper/css/navigation';
@@ -52,7 +51,7 @@ export default {
 
 <style scoped>
 .swiper {
-  width: 600px;
+  width: 100%;
   height: 400px;
 }
 .swiper-slide img {
