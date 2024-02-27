@@ -1,14 +1,41 @@
 <template>
-  <!-- <SwiperC></SwiperC> -->
   <div class="container">
-    <div class="row mt-5">
-      <div class="col-md-4 mt-md-4">
-        <img src="https://plus.unsplash.com/premium_photo-1676422355165-d809008b8342?q=80&w=1998&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="">
-          <!-- <SwiperC></SwiperC> -->
+    <div class="container">
+      <div class="row">
+        <div class="col-md-6">
+          <h2>Our latest Activity</h2>
+          <SwiperC></SwiperC>
+        </div>
+        <div class="col-md-6">
+          <h2>Our latest Activity</h2>
+          <MapC style="width: 100%; height: 400px"></MapC>
+        </div>
       </div>
-      <div class="col-md-4 mt-md-4">
-        <h2>See People Shop</h2>
-        <MapC></MapC>
+      <div class="container mt-5">
+        <div class="row bg-gray">
+          <div class="col">
+            <div class="row justify-content-center py-7">
+              <div class="col-md-6 text-center">
+                <h3>
+                  <strong> Language & World: The Essence of Reading </strong>
+                </h3>
+                <figure>
+                  <blockquote class="blockquote">
+                    <p>
+                      Die Grenzen meiner Sprache sind die Grenzen meiner Welt
+                    </p>
+                  </blockquote>
+                  <figcaption class="blockquote-footer">
+                    Ludwig Wittgenstein in
+                    <cite title="Source Title"
+                      >Logisch-philosophische Abhandlung</cite
+                    >
+                  </figcaption>
+                </figure>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
       <div class="container">
         <div class="row mt-5">
@@ -47,6 +74,7 @@
                     diam nonumy eirmod.
                   </p>
                 </div>
+                <button class="btn btn-outline-info">Add to basket</button>
               </div>
             </div>
           </div>
@@ -65,28 +93,7 @@
                     diam nonumy eirmod.
                   </p>
                 </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="container">
-        <div class="row bg-gray">
-          <div class="col">
-            <div class="row justify-content-center py-7">
-              <div class="col-md-6 text-center">
-                <h3> <strong> Language & World: The Essence of Reading </strong></h3>
-                <figure>
-                  <blockquote class="blockquote">
-                    <p>
-                      Die Grenzen meiner Sprache sind die Grenzen meiner Welt
-                    </p>
-                  </blockquote>
-                  <figcaption class="blockquote-footer">
-                    Ludwig Wittgenstein in
-                    <cite title="Source Title">Logisch-philosophische Abhandlung</cite>
-                  </figcaption>
-                </figure>
+                <button class="btn btn-outline-info">Add to basket</button>
               </div>
             </div>
           </div>
@@ -98,12 +105,12 @@
 
 <script>
 import MapC from '../components/MapComponent.vue';
-// import SwiperC from '../components/SwiperComponent.vue';
+import SwiperC from '../components/SwiperComponent.vue';
 
 export default {
   components: {
     MapC,
-    // SwiperC,
+    SwiperC,
   },
 };
 </script>
