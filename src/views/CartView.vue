@@ -1,63 +1,79 @@
 <template>
-  <div class="container mt-5">
-    <h2>購物車</h2>
-    <table class="table">
-      <thead>
-        <tr>
-          <th>#</th>
-          <th>商品名稱</th>
-          <th>價格</th>
-          <th>數量</th>
-          <th>小計</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-for="(item, index) in cartItems" :key="index">
-          <td>{{ index + 1 }}</td>
-          <td>{{ item.name }}</td>
-          <td>${{ item.price }}</td>
-          <td>
-            <button
-              class="btn btn-secondary btn-sm"
-              @click="updateQuantity(index, -1)"
-            >
-              -
-            </button>
-            <input
-              type="text"
-              class="form-control d-inline-block"
-              v-model="item.quantity"
-              style="width: 60px"
-            />
-            <button
-              class="btn btn-secondary btn-sm"
-              @click="updateQuantity(index, 1)"
-            >
-              +
-            </button>
-          </td>
-          <td>${{ item.quantity * item.price }}</td>
-        </tr>
-      </tbody>
-    </table>
-    <div class="form-group">
-      <label for="couponCode">優惠券代碼</label>
-      <input
-        type="text"
-        class="form-control"
-        v-model="couponCode"
-        placeholder="輸入優惠券代碼"
-      />
-      <button class="btn btn-success mt-2" @click="applyCoupon">
-        套用優惠券
-      </button>
+  <div class="container mt-4">
+    <div class="row mb-3">
+      <div class="col-12">
+        <label for="couponCode">Coupon Code:</label>
+        <input type="text" id="couponCode"
+         v-model="couponCode" placeholder="Enter coupon code" class="form-control">
+        <button class="btn btn-success mt-2" @click="applyCoupon">Apply Coupon</button>
+      </div>
     </div>
-    <div class="d-flex justify-content-end">
-      <h4>總計：${{ totalPrice }}</h4>
+    <div class="row">
+      <div class="col-12">
+        <table class="table table-hover">
+          <thead>
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">Item</th>
+              <th scope="col">Price</th>
+              <th scope="col">Quantity</th>
+              <th scope="col">Total</th>
+              <th scope="col">Remove</th> <!-- New column for actions -->
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="(item, index) in cartItems" :key="item.id">
+              <th scope="row" class="align-middle">{{ index + 1 }}</th>
+              <td class="align-middle">
+                <div class="row">
+                  <div class="col-md-3">
+                    <img :src="item.img" class="img-fluid" alt="Item" />
+                  </div>
+                  <div class="col-md-9">
+                    <div>{{ item.title }}</div>
+                    <div class="text-muted">{{ item.description }}</div>
+                  </div>
+                </div>
+              </td>
+              <td class="align-middle">${{ item.price }}</td>
+              <td class="align-middle">
+                <div class="quantity-controller btn-group" role="group">
+                  <button type="button"
+                  class="btn btn-secondary" @click="decreaseQuantity(item)">-</button>
+                  <input type="text"
+                   class="form-control text-center" :value="item.quantity" disabled />
+                  <button type="button"
+                   class="btn btn-secondary" @click="increaseQuantity(item)">+</button>
+                </div>
+              </td>
+              <td class="align-middle">${{ item.quantity * item.price }}</td>
+              <td class="align-middle"> <!-- New column for remove button -->
+                <button type="button" class="btn btn-danger" @click="removeItem(item)">X</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <tfoot>
+            <tr>
+              <td colspan="4"
+              class="text-right font-weight-bold subtotal-total-label">Subtotal:</td>
+              <td colspan="2" class="text-right subtotal-total-value">${{ formattedSubtotal }}</td>
+            </tr>
+            <tr>
+              <td colspan="4"
+               class="text-right font-weight-bold subtotal-total-label">Discount:</td>
+              <td colspan="2"
+               class="text-right text-success subtotal-total-value">- ${{ formattedDiscount }}</td>
+            </tr>
+            <tr>
+              <td colspan="4" class="text-right font-weight-bold subtotal-total-label">Total:</td>
+              <td colspan="2"
+               class="text-right font-weight-bold subtotal-total-value">${{ formattedTotal }}</td>
+            </tr>
+          </tfoot>
+      </div>
     </div>
-    <div class="d-flex justify-content-end mt-2">
-      <button type="button" class="btn btn-primary">結帳</button>
-    </div>
+    <button class="btn btn-info">checkout</button>
   </div>
 </template>
 
@@ -66,42 +82,31 @@ export default {
   data() {
     return {
       cartItems: [
-        // 示例商品，實際應用中應從後端獲取
-        { name: '商品 A', price: 100, quantity: 1 },
-        // 可以添加更多商品
+        {
+          id: 1,
+          title: 'Book Title 1',
+          description: 'Description for book 1',
+          price: 9.99,
+          quantity: 1,
+          img: 'https://im2.book.com.tw/image/getImage?i=https://www.books.com.tw/img/CN1/190/95/CN11909591.jpg&v=652ed512k&w=348&h=348',
+        },
+        {
+          id: 2,
+          title: 'Book Title 2',
+          description: 'Description for book 2',
+          price: 12.99,
+          quantity: 1,
+        },
+        {
+          id: 3,
+          title: 'Book Title 3',
+          description: 'Description for book 3',
+          price: 7.99,
+          quantity: 1,
+        },
+        // 可以继续添加更多的商品
       ],
-      couponCode: '',
-      discount: 0, // 優惠金額，根據優惠券代碼變化
     };
-  },
-  methods: {
-    updateQuantity(index, amount) {
-      const item = this.cartItems[index];
-      item.quantity += amount;
-      if (item.quantity < 1) item.quantity = 1; // 防止數量小於1
-    },
-    applyCoupon() {
-      // 假設優惠券代碼為"DISCOUNT10"，減少10元
-      if (this.couponCode === 'DISCOUNT10') {
-        this.discount = 10;
-      } else {
-        this.discount = 0;
-        alert('無效的優惠券代碼');
-      }
-    },
-  },
-  computed: {
-    totalPrice() {
-      const total = this.cartItems.reduce(
-        (acc, item) => acc + item.price * item.quantity,
-        0,
-      );
-      return total - this.discount;
-    },
   },
 };
 </script>
-
-<style>
-/* 可以添加自定義樣式 */
-</style>
