@@ -5,7 +5,7 @@ import { library } from '@fortawesome/fontawesome-svg-core';
 import { faFacebook, faInstagram, faLine } from '@fortawesome/free-brands-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import { createPinia } from 'pinia';
-// import 'bootstrap';
+import 'bootstrap';
 // import 'bootstrap/scss/bootstrap.scss';
 
 import './assets/all.scss';
