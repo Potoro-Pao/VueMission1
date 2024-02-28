@@ -23,7 +23,8 @@
                 <h5 class="card-title">{{ product.title }}</h5>
                 <p class="card-text flex-grow-1">{{ product.price }} 元</p> <!-- 使用flex-grow -->
                 <div class="mt-2 mb-2"> <!-- 确保按钮在底部 -->
-                  <a href="#" class="btn btn-outline-secondary w-50 gx-3">View More</a>
+                  <router-link :to="`/product/${product.id}`"
+                  class="btn btn-outline-secondary w-50 gx-3">View More</router-link>
                   <a href="#" class="btn btn-outline-info w-50 gx-3">Add to Cart</a>
                 </div>
               </div>
