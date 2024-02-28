@@ -57,11 +57,12 @@
                   class="bi bi-cart-fill"
                 ></i>
                 <span
-                  class="position-absolute top-0 start-100
-                  translate-middle badge rounded-pill bg-danger"
+                  class="position-absolute top-0
+                   start-100 translate-middle badge rounded-pill bg-danger"
                   style="transform: translate(-50%, -50%)"
                 >
-                  {{this.cart.carts?.length}}
+                  {{ this.cart?.length }}
+                  <!-- 使用pinia的值 -->
                   <span class="visually-hidden">unread messages</span>
                 </span>
               </div>
@@ -74,23 +75,21 @@
 </template>
 
 <script>
-import axios from 'axios';
-
-const { VITE_URL, VITE_API } = import.meta.env;
+import { mapActions, mapState } from 'pinia';
+import cartStore from '../stores/cartStore';
 
 export default {
-  data() {
-    return {
-      cart: {},
-    };
+  computed: {
+    ...mapState(cartStore, ['cart']),
   },
   methods: {
-    getCart() {
-      const api = `${VITE_URL}/api/${VITE_API}/cart`;
-      axios.get(api).then((res) => {
-        this.cart = res.data.data;
-      });
-    },
+    ...mapActions(cartStore, ['getCart']),
+    // getCart() {
+    //   const api = `${VITE_URL}/api/${VITE_API}/cart`;
+    //   axios.get(api).then((res) => {
+    //     this.cart = res.data.data;
+    //   });
+    // }, 原來在購物車寫好的API可以把她想成一種公用項的tools放到piniastore裡面
   },
   mounted() {
     this.getCart();

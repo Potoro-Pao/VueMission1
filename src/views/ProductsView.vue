@@ -76,6 +76,8 @@
 <script>
 import Loading from 'vue-loading-overlay';
 import axios from 'axios';
+import { mapActions } from 'pinia';
+import cartStore from '../stores/cartStore';
 
 const { VITE_URL, VITE_API } = import.meta.env;
 
@@ -109,18 +111,8 @@ export default {
     },
   },
   methods: {
-    addToCart(id) {
-      const api = `${VITE_URL}/api/${VITE_API}/cart`;
-      const order = {
-        product_id: id,
-        qty: 1,
-      };
-      axios
-        .post(api, { data: order })
-        .then((res) => {
-          console.log(res);
-        });
-    },
+    ...mapActions(cartStore, ['addToCart']),
+
     getProduct() {
       const { categories = '' } = this.$route.query;
       const api = `${VITE_URL}/api/${VITE_API}/products?category=${categories}`;
