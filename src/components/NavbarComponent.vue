@@ -73,9 +73,9 @@
           </ul>
         </div>
       </nav>
-      <!-- Content Container -->
+      <!-- Content Container
       <div class="py-4">
         <router-view></router-view>
-      </div>
+      </div> -->
     </div>
 </template>

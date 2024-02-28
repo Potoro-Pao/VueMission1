@@ -1,13 +1,13 @@
 <template>
   <div class="container">
-    <div class="container">
+    <div class="container mt-5">
       <div class="row">
         <div class="col-md-6">
           <h2>Our latest Activity</h2>
           <SwiperC></SwiperC>
         </div>
         <div class="col-md-6">
-          <h2>Our latest Activity</h2>
+          <h2>Watch People Shop</h2>
           <MapC style="width: 100%; height: 400px"></MapC>
         </div>
       </div>
@@ -37,7 +37,7 @@
           </div>
         </div>
       </div>
-      <div class="container">
+      <div class="container mb-6">
         <div class="row mt-5">
           <h2>Best Selling Books</h2>
           <div class="col-md-4 mt-md-4">

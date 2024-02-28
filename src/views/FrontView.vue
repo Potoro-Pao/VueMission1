@@ -2,13 +2,10 @@
   <div class="position-relative" style="min-height: 100vh">
     <NavC></NavC>
     <BgC></BgC>
+    <RouterView></RouterView>
   </div>
-  <div class="cotainer">
-    <div class="row">
-    </div>
-  </div>
-  <!--footer!-->
-  <FooterC></FooterC>
+  <FooterC class="mt-6 w-100" style="bottom: 0;"></FooterC>
+
 </template>
 
 <script>
