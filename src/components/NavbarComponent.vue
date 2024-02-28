@@ -61,7 +61,7 @@
                   translate-middle badge rounded-pill bg-danger"
                   style="transform: translate(-50%, -50%)"
                 >
-                  99+
+                  {{this.cart.carts?.length}}
                   <span class="visually-hidden">unread messages</span>
                 </span>
               </div>
@@ -89,7 +89,6 @@ export default {
       const api = `${VITE_URL}/api/${VITE_API}/cart`;
       axios.get(api).then((res) => {
         this.cart = res.data.data;
-        console.log(this.cart);
       });
     },
   },

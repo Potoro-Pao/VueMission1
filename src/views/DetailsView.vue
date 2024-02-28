@@ -37,7 +37,8 @@
               <input type="text" class="form-control" value="1" readonly />
               <button class="btn btn-outline-secondary" type="button">+</button>
             </div>
-            <button class="btn btn-primary">Add to Cart</button>
+            <button @click.prevent = "addToCart(product.id)"
+            class="btn btn-primary">Add to Cart</button>
           </div>
         </div>
       </div>
@@ -57,6 +58,18 @@ export default {
     };
   },
   methods: {
+    addToCart(id) {
+      const api = `${VITE_URL}/api/${VITE_API}/cart`;
+      const order = {
+        product_id: id,
+        qty: 1,
+      };
+      axios
+        .post(api, { data: order })
+        .then((res) => {
+          console.log(res);
+        });
+    },
     getProduct() {
       const { id } = this.$route.params;
       axios.get(`${VITE_URL}/api/${VITE_API}/product/${id}`).then((res) => {
