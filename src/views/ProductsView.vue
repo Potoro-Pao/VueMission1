@@ -57,7 +57,10 @@
                     class="btn btn-outline-secondary w-50 gx-3"
                     >View More</router-link
                   >
-                  <a href="#" class="btn btn-outline-info w-50 gx-3"
+                  <a
+                    @click.prevent="addToCart(product.id)"
+                    href="#"
+                    class="btn btn-outline-info w-50 gx-3"
                     >Add to Cart</a
                   >
                 </div>
@@ -106,6 +109,18 @@ export default {
     },
   },
   methods: {
+    addToCart(id) {
+      const api = `${VITE_URL}/api/${VITE_API}/cart`;
+      const order = {
+        product_id: id,
+        qty: 1,
+      };
+      axios
+        .post(api, { data: order })
+        .then((res) => {
+          console.log(res);
+        });
+    },
     getProduct() {
       const { categories = '' } = this.$route.query;
       const api = `${VITE_URL}/api/${VITE_API}/products?category=${categories}`;
