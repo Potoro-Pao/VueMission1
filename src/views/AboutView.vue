@@ -1,5 +1,6 @@
 <template>
   <div>
+    <div class="container">
     <RouterLink to="/">Home</RouterLink> |
     <RouterLink to="/about">About</RouterLink>
     <h1>About Books</h1>
@@ -35,6 +36,7 @@
       words, discovering endless possibilities.
     </p>
   </div>
+</div>
 </template>
 
 <script>
