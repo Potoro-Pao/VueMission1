@@ -1,73 +1,38 @@
 <template>
   <loading v-model:active="isLoading"></loading>
-  <div class="container">
-  <div class="row">
-    <div class="col" style="display: flex; justify-content: center">
-      <div>
-        <h1>你現在在前台產品頁面</h1>
+  <div class="container mt-5">
+    <div class="row">
+      <!-- 分類菜單 -->
+      <div class="col-md-3">
+        <div class="list-group">
+          <a href="#" class="list-group-item list-group-item-action active">所有分類</a>
+          <a href="#" class="list-group-item list-group-item-action">分類一</a>
+          <a href="#" class="list-group-item list-group-item-action">分類二</a>
+          <a href="#" class="list-group-item list-group-item-action">分類三</a>
+        </div>
+      </div>
+      <!-- 產品卡片 -->
+      <div class="col-md-8 ">
+        <div class="row">
+          <div class="col-md-4 d-flex align-items-stretch"
+           v-for="product in products" :key="product.id">
+            <div class="card mb-3 w-100 d-flex flex-column"> <!-- 加入了flex布局 -->
+              <img  style="object-fit: cover"
+               :src="product.imageUrl" class="card-img-top" alt="產品圖片">
+              <div class="card-body d-flex flex-column"> <!-- 调整了这里 -->
+                <h5 class="card-title">{{ product.title }}</h5>
+                <p class="card-text flex-grow-1">{{ product.price }} 元</p> <!-- 使用flex-grow -->
+                <div class="mt-2 mb-2"> <!-- 确保按钮在底部 -->
+                  <a href="#" class="btn btn-outline-secondary w-50 gx-3">View More</a>
+                  <a href="#" class="btn btn-outline-info w-50 gx-3">Add to Cart</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
-  <table class="table align-middle">
-    <thead>
-      <tr>
-        <th>圖片</th>
-        <th>商品名稱</th>
-        <th>價格</th>
-        <th></th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr v-for="product in products" :key="product.id">
-        <td style="width: 200px">
-          <div
-            style="
-              height: 100px;
-              background-size: cover;
-              background-position: center;
-            "
-            :style="{ backgroundImage: `url(${product.imageUrl})` }"
-          ></div>
-        </td>
-        <td>{{ product.title }}</td>
-        <!-- <td>
-          <div class="h5" v-if="product.origin_price === product.price">
-            {{ product.price }} 元
-          </div>
-          <div v-else>
-            <del class="h6">原價 {{ product.origin_price }} 元</del>
-            <div class="h5">現在只要 {{ product.price }} 元</div>
-          </div>
-        </td> -->
-        <td>
-          <div class="btn-group btn-group-sm">
-            <button
-              @click="openModal(product)"
-              type="button"
-              class="btn btn-outline-secondary"
-            >
-              <i class="fas fa-spinner fa-pulse"></i>
-              查看更多
-            </button>
-            <!-- <button
-              :disabled="product.id === status.addToCartLoading"
-              @click="addToCart(product.id, 1)"
-              type="button"
-              class="btn btn-outline-danger"
-            >
-              <i
-                v-if="product.id === status.addToCartLoading"
-                class="fas fa-spinner fa-pulse"
-              ></i>
-              加到購物車
-            </button> -->
-            <button class="btn btn-outline-danger">加到購物車</button>
-          </div>
-        </td>
-      </tr>
-    </tbody>
-  </table>
-</div>
 </template>
 
 <script>

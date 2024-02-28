@@ -39,7 +39,7 @@
       </div>
       <div class="container mb-6">
         <div class="row mt-5">
-          <h2>Best Selling Books</h2>
+          <h2>Bestselling Books</h2>
           <div class="col-md-4 mt-md-4">
             <div class="card border-0 mb-4">
               <img
