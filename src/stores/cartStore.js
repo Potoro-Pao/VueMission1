@@ -40,8 +40,6 @@ export default defineStore('cartStore', {
         product_id: item.product_id,
         qty,
       };
-
-      console.log(order);
       axios
         .put(`${VITE_URL}/api/${VITE_API}/cart/${item.id}`, { data: order })
         .then(() => {

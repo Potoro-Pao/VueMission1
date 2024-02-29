@@ -88,7 +88,7 @@
                 <button
                   type="button"
                   class="btn btn-danger"
-                  @click="this.removeCartItem(item.product.id)"
+                  @click="this.removeCartItem(item.id)"
                 >
                   X
                 </button>
