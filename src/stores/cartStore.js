@@ -25,5 +25,29 @@ export default defineStore('cartStore', {
         this.getCart();
       });
     },
+    removeCartItem(id) {
+      console.log(id);
+      // this.status.cartQtyLoading = id;
+      axios.delete(`${VITE_URL}/api/${VITE_API}/cart/${id}`).then((res) => {
+        console.log('我有被觸發', res);
+        // this.status.cartQtyLoading = '';
+        this.getCart();
+        // this.$refs.userModal.close();
+      });
+    },
+    changeCartQty(item, qty = 1) {
+      const order = {
+        product_id: item.product_id,
+        qty,
+      };
+
+      console.log(order);
+      axios
+        .put(`${VITE_URL}/api/${VITE_API}/cart/${item.id}`, { data: order })
+        .then(() => {
+          this.getCart();
+        })
+        .catch((err) => console.log(err));
+    },
   },
 });
