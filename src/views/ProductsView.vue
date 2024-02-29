@@ -68,6 +68,7 @@
             </div>
           </div>
         </div>
+        <pagC :pages="pages" :get-product="getProduct"></pagC>
       </div>
     </div>
   </div>
@@ -78,12 +79,14 @@ import Loading from 'vue-loading-overlay';
 import axios from 'axios';
 import { mapActions } from 'pinia';
 import cartStore from '../stores/cartStore';
+import pagC from '../components/PaginationComponent.vue';
 
 const { VITE_URL, VITE_API } = import.meta.env;
 
 export default {
   components: {
     Loading,
+    pagC,
   },
   data() {
     return {
@@ -99,9 +102,9 @@ export default {
         'Murder',
         'TextBook',
       ],
+      pages: {},
     };
   },
-
   watch: {
     '$route.query': {
       handler() {
@@ -113,11 +116,12 @@ export default {
   methods: {
     ...mapActions(cartStore, ['addToCart']),
 
-    getProduct() {
+    getProduct(page = 1) {
       const { categories = '' } = this.$route.query;
-      const api = `${VITE_URL}/api/${VITE_API}/products?category=${categories}`;
+      const api = `${VITE_URL}/api/${VITE_API}/products?page=${page}&category=${categories}`;
       // /products?category=Drama
       axios.get(api).then((res) => {
+        console.log(res);
         this.products = res.data.products;
         this.pages = res.data.pagination;
         this.isLoading = false;

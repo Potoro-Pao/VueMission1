@@ -2,14 +2,14 @@
   <div class="container mt-4">
     <div class="row mb-3">
       <div class="col-12">
-        <!-- <label for="couponCode">Coupon Code:</label>
+        <label for="couponCode">Coupon Code:</label>
         <input
           type="text"
           id="couponCode"
           v-model="couponCode"
           placeholder="Enter coupon code"
           class="form-control"
-        /> -->
+        />
         <button class="btn btn-success mt-2" @click="applyCoupon">
           Apply Coupon
         </button>
