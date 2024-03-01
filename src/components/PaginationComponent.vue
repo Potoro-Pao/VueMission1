@@ -15,11 +15,11 @@
         :class="{ active: page === pages.current_page }"
         :key="page + 123"
       >
-        <router-link
+        <a
           class="page-link"
           :key="page"
-          :to="{ path: '/products', query: { page: page } }"
-          >{{ page }}</router-link
+          :href="{ path: '/products', query: { page: page } }"
+          >{{ page }}</a
         >
       </li>
 
