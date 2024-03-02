@@ -2,16 +2,23 @@ import { defineStore } from 'pinia';
 import axios from 'axios';
 
 const { VITE_URL, VITE_API } = import.meta.env;
+
 export default defineStore('cartStore', {
-  state: () => ({ cart: [], final_total: 0, total: 0 }),
+  state: () => ({
+    cart: [],
+    final_total: 0,
+    total: 0,
+    discount: 0,
+    showToast: '',
+  }),
   actions: {
     getCart() {
       const api = `${VITE_URL}/api/${VITE_API}/cart`;
       axios.get(api).then((res) => {
         this.cart = res.data.data.carts;
-        this.final_total = res.data.data.final_total;
+        this.final_total = Math.floor(res.data.data.final_total);
         this.total = res.data.data.total;
-        console.log('pineapple', this.cart);
+        this.discount = this.final_total - this.total;
       });
     },
     addToCart(id) {
@@ -20,19 +27,13 @@ export default defineStore('cartStore', {
         product_id: id,
         qty: 1,
       };
-      axios.post(api, { data: order }).then((res) => {
-        console.log(res);
+      axios.post(api, { data: order }).then(() => {
         this.getCart();
       });
     },
     removeCartItem(id) {
-      console.log(id);
-      // this.status.cartQtyLoading = id;
-      axios.delete(`${VITE_URL}/api/${VITE_API}/cart/${id}`).then((res) => {
-        console.log('我有被觸發', res);
-        // this.status.cartQtyLoading = '';
+      axios.delete(`${VITE_URL}/api/${VITE_API}/cart/${id}`).then(() => {
         this.getCart();
-        // this.$refs.userModal.close();
       });
     },
     changeCartQty(item, qty = 1) {
@@ -44,8 +45,31 @@ export default defineStore('cartStore', {
         .put(`${VITE_URL}/api/${VITE_API}/cart/${item.id}`, { data: order })
         .then(() => {
           this.getCart();
+        });
+    },
+
+    resetShowToast() {
+      console.log(this.showToast);
+      this.showToast = '';
+    },
+    applyDiscount(couponCode) {
+      const couponCodeData = {
+        data: {
+          code: couponCode,
+        },
+      };
+
+      const api = `${VITE_URL}/api/${VITE_API}/coupon`;
+      axios
+        .post(api, couponCodeData)
+        .then((res) => {
+          this.final_total = Math.floor(res.data.data.final_total);
+          this.discount = Math.floor(Math.abs(this.final_total - this.total));
+          this.showToast = '已套用優惠券';
         })
-        .catch((err) => console.log(err));
+        .catch(() => {
+          this.showToast = +Math.random();
+        });
     },
   },
 });

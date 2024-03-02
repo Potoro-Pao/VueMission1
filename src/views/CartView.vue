@@ -1,5 +1,47 @@
 <template>
   <div class="container mt-4">
+    <div class="container mt-4">
+      <!-- 其他内容 -->
+      <div
+        aria-live="polite"
+        aria-atomic="true"
+        class="position-fixed top-0 end-0 p-3"
+        style="z-index: 11"
+      >
+        <div
+          ref="toast"
+          class="toast"
+          role="alert"
+          aria-live="assertive"
+          aria-atomic="true"
+        >
+          <div :class="['toast-body', toastClass]">
+            Your coupon {{ couponCode }} has been applied successfully!
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="container mt-4">
+      <!-- 其他内容 -->
+      <div
+        aria-live="polite"
+        aria-atomic="true"
+        class="position-fixed top-0 end-0 p-3"
+        style="z-index: 11"
+      >
+        <div
+          ref="invalidToast"
+          class="toast"
+          role="alert"
+          aria-live="assertive"
+          aria-atomic="true"
+        >
+          <div :class="['toast-body', toastClass]">
+            Your coupon is invalid!
+          </div>
+        </div>
+      </div>
+    </div>
     <div class="row mb-3">
       <div class="col-12">
         <label for="couponCode">Coupon Code:</label>
@@ -10,6 +52,8 @@
           placeholder="Enter coupon code"
           class="form-control"
         />
+        <div data-v-fd8aa920 class="alert alert-info">Code: Reading</div>
+        <div data-v-fd8aa920 class="alert alert-primary">Code: Literature</div>
         <button class="btn btn-success mt-2" @click="applyCoupon">
           Apply Coupon
         </button>
@@ -113,20 +157,6 @@
               colspan="4"
               class="text-right font-weight-bold subtotal-total-label"
             >
-              Discount:
-            </td>
-            <td
-              colspan="2"
-              class="text-right text-success subtotal-total-value"
-            >
-              <!-- - ${{ formattedDiscount }} -->
-            </td>
-          </tr>
-          <tr>
-            <td
-              colspan="4"
-              class="text-right font-weight-bold subtotal-total-label"
-            >
               Total:
             </td>
             <td
@@ -134,6 +164,21 @@
               class="text-right font-weight-bold subtotal-total-value"
             >
               ${{ this.final_total }}
+            </td>
+          </tr>
+          <tr v-if="this.discount">
+            <td
+              colspan="4"
+              class="text-right font-weight-bold subtotal-total-label"
+            >
+              Discount:
+            </td>
+            <td
+              colspan="2"
+              class="text-right text-success subtotal-total-value"
+            >
+              -$
+              {{ this.discount === 0 ? this.refreshDiscount : this.discount }}
             </td>
           </tr>
         </tfoot>
@@ -144,19 +189,73 @@
 </template>
 
 <script>
-
 import { mapActions, mapState } from 'pinia';
+import { Toast } from 'bootstrap';
+
 import cartStore from '../stores/cartStore';
 
 export default {
+  data() {
+    return {
+      couponCode: '',
+      toastBody: null,
+      toastClass: '',
+      defaultCouponValue: 0,
+    };
+  },
   computed: {
-    ...mapState(cartStore, ['cart', 'final_total', 'total']), // 将 cart 映射到 computed 属性
+    ...mapState(cartStore, [
+      'cart',
+      'final_total',
+      'total',
+      'discount',
+      'showToast',
+      'refreshDiscount',
+    ]), // 将 cart 映射到 computed 属性
+  },
+  watch() {
+    if (this.showToast === '已套用優惠券') {
+      this.onToastCalled();
+    }
   },
   methods: {
-    ...mapActions(cartStore, ['getCart', 'removeCartItem', 'changeCartQty']),
+    ...mapActions(cartStore, [
+      'getCart',
+      'removeCartItem',
+      'changeCartQty',
+      'applyDiscount',
+      'resetShowToast',
+    ]),
+    applyCoupon() {
+      this.applyDiscount(this.couponCode);
+    },
+    onToastCalled() {
+      if (this.showToast === '已套用優惠券') {
+        if (this.couponCode === 'Reading') {
+          this.toastClass = 'text-bg-info';
+        }
+        if (this.couponCode === 'Literature') {
+          this.toastClass = 'text-bg-primary';
+        }
+        this.toastBody.show();
+      } else {
+        this.toastClass = 'text-bg-danger';
+        this.invalidToast.show();
+      }
+      this.resetShowToast();
+    },
   },
   mounted() {
     this.getCart();
+    const toastElement = this.$refs.toast;
+    const invalidToastElement = this.$refs.invalidToast;
+    this.toastBody = new Toast(toastElement);
+    this.invalidToast = new Toast(invalidToastElement);
+    this.$watch('showToast', (newVal) => {
+      if (newVal) {
+        this.onToastCalled();
+      }
+    });
   },
 };
 </script>
