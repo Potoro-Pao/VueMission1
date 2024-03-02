@@ -16,7 +16,7 @@
           aria-atomic="true"
         >
           <div :class="['toast-body', toastClass]">
-            Your coupon {{ couponCode }} has been applied successfully!
+            Your coupon has been applied successfully!
           </div>
         </div>
       </div>
@@ -184,7 +184,7 @@
         </tfoot>
       </div>
     </div>
-    <button class="btn btn-info">checkout</button>
+    <button class="btn btn-info"><router-link :to ="`/form`">checkout</router-link></button>
   </div>
 </template>
 

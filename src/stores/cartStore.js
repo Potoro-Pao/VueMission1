@@ -19,6 +19,7 @@ export default defineStore('cartStore', {
         this.final_total = Math.floor(res.data.data.final_total);
         this.total = res.data.data.total;
         this.discount = this.final_total - this.total;
+        // 不這樣寫的話，就算已使用優惠券也顯示不出來
       });
     },
     addToCart(id) {
