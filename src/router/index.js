@@ -31,6 +31,10 @@ const routes = [
         path: 'form',
         component: () => import('../views/FillFormView.vue'),
       },
+      {
+        path: 'order',
+        component: () => import('../views/CheckOrderForm.vue'),
+      },
     ],
   },
   {

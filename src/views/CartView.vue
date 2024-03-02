@@ -184,7 +184,8 @@
         </tfoot>
       </div>
     </div>
-    <button class="btn btn-info"><router-link :to ="`/form`">checkout</router-link></button>
+    <router-link to="/form" class="btn btn-info">Proceed to Checkout</router-link>
+
   </div>
 </template>
 

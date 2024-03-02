@@ -2,6 +2,7 @@
   <div class="container py-5">
     <div class="row justify-content-center">
       <div class="col-md-6">
+        <h1>Complete Your Information</h1>
         <VForm @submit.prevent="onSubmit" v-slot="{ errors }">
           <div class="mb-3">
             <label for="email">Email</label>
@@ -11,7 +12,7 @@
               type="email"
               class="form-control"
               :class="{ 'is-invalid': errors['email'] }"
-              placeholder="請輸入 Email"
+              placeholder="Your Email"
               rules="email|required"
               v-model="user.email"
             />
@@ -19,14 +20,14 @@
           </div>
 
           <div class="mb-3">
-            <label for="name">收件人姓名</label>
+            <label for="name">Name</label>
             <VField
               id="name"
               name="name"
               type="text"
               class="form-control"
               :class="{ 'is-invalid': errors['name'] }"
-              placeholder="請輸入姓名"
+              placeholder="Your Name"
               rules="required"
               v-model="user.name"
             />
@@ -34,14 +35,14 @@
           </div>
 
           <div class="mb-3">
-            <label for="phone">電話</label>
+            <label for="phone">Telephone</label>
             <VField
               id="phone"
               name="phone"
               type="tel"
               class="form-control"
               :class="{ 'is-invalid': errors['phone'] }"
-              placeholder="請輸入電話"
+              placeholder="Telephone"
               :rules="isPhone"
               v-model="user.phone"
             />
@@ -49,14 +50,42 @@
           </div>
 
           <div class="mb-3">
-            <label for="address">收件人地址</label>
+            <label for="country">Country</label>
+            <VField
+              id="country"
+              name="country"
+              class="form-control"
+              :class="{ 'is-invalid': errors['country'] }"
+              placeholder="Your Country"
+              :rules="isCountry"
+              v-model="user.country"
+            />
+            <ErrorMessage name="country" class="invalid-feedback" />
+          </div>
+
+          <div class="mb-3">
+            <label for="city">City</label>
+            <VField
+              id="city"
+              name="city"
+              class="form-control"
+              :class="{ 'is-invalid': errors['city'] }"
+              placeholder="Your City"
+              :rules="isCity"
+              v-model="user.city"
+            />
+            <ErrorMessage name="city" class="invalid-feedback" />
+          </div>
+
+          <div class="mb-3">
+            <label for="address">Address</label>
             <VField
               id="address"
               name="address"
               type="text"
               class="form-control"
               :class="{ 'is-invalid': errors['address'] }"
-              placeholder="請輸入地址"
+              placeholder="Address"
               rules="required"
               v-model="user.address"
             />
@@ -64,20 +93,20 @@
           </div>
 
           <div class="mb-3">
-            <label for="message">留言</label>
+            <label for="message">Message</label>
             <textarea
               id="message"
               class="form-control"
               rows="10"
-              placeholder="留下您的訊息"
+              placeholder="Write something"
               v-model="user.message"
             ></textarea>
           </div>
 
           <div class="text-end">
-            <button class="btn btn-danger text-white" type="submit">
-              送出訂單
-            </button>
+            <router-link class="btn btn-danger text-white" @click="onSubmit" :to="`/order`"
+              >Review Order</router-link
+            >
           </div>
         </VForm>
       </div>
@@ -95,9 +124,8 @@ import {
 } from 'vee-validate';
 import { required, email } from '@vee-validate/rules';
 import { localize } from '@vee-validate/i18n';
-import en from '../en.json'; // 根据你的文件结构调整路径
+import en from '../en.json';
 
-// 定义验证规则
 defineRule('required', required);
 defineRule('email', email);
 
@@ -120,6 +148,8 @@ export default {
         email: '',
         name: '',
         phone: '',
+        country: '',
+        city: '',
         address: '',
         message: '',
       },
@@ -132,9 +162,25 @@ export default {
     },
     isPhone(value) {
       const phoneNumber = /^(09)[0-9]{8}$/;
-      return phoneNumber.test(value)
+      const result = phoneNumber.test(value) ? true : 'Telephone is required.';
+      if (result && value) {
+        if (value.length < 8) {
+          return 'The length must be at least 8 digits.';
+        }
+      }
+      return result;
+    },
+    isCity(value) {
+      const cityName = /^[A-Z][a-z]*$/;
+      return cityName.test(value)
         ? true
-        : 'phoneNumber is required.';
+        : 'City is required and start with Uppercase.';
+    },
+    isCountry(value) {
+      const countryName = /^[A-Z][a-z]*$/;
+      return countryName.test(value)
+        ? true
+        : 'Country is required and start with Uppercase.';
     },
   },
 };
