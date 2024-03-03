@@ -1,10 +1,9 @@
 <template>
+  <loading v-model:active="isLoading"></loading>
   <div class="container py-5">
     <div class="row justify-content-center">
       <div class="col-md-6">
         <h1>Complete Your Information</h1>
-        <!-- <v-form ref="form" class="col-md-6" v-slot="{ errors }" @submit="createOrder"> -->
-
         <VForm @submit="onSubmit" v-slot="{ errors }">
           <div class="mb-3">
             <label for="email">Email</label>
@@ -107,15 +106,16 @@
 
           <div class="text-end">
             <div class="text-end">
-              <button type="submit" class="btn btn-danger text-white">Review Order</button>
-
+              <button type="submit" class="btn btn-danger text-white">
+                Review Order
+              </button>
             </div>
           </div>
         </VForm>
       </div>
     </div>
   </div>
-  <!-- 側滑菜單，使用Bootstrap的modal -->
+  <!-- 使用Bootstrap的modal做訂單簡述 -->
   <div
     class="modal right fade"
     ref="orderModal"
@@ -138,27 +138,31 @@
           </button>
         </div>
         <div class="modal-body">
-          <div v-for = "goods in this.cart" :key = goods.id>
-            <div><strong>{{goods.product.title}}</strong></div>
-            <div>${{goods.product.price}}</div>
+          <div v-for="goods in this.cart" :key="goods.id">
+            <div>
+              <strong>{{ goods.product.title }}</strong>
+            </div>
+            <div>${{ goods.product.price }}</div>
           </div>
-          <hr>
-          <p> Origin Price: {{this.total}}</p>
-          <p class="text-success">Discount: {{this.discount}}</p>
+          <hr />
+          <p>Origin Price: {{ this.total }}</p>
+          <p class="text-success">Discount: {{ this.discount }}</p>
           <p>Email: {{ user.email }}</p>
           <p>Your Name: {{ user.name }}</p>
-          <p class="text-danger">Total Amount: ${{this.final_total}}</p>
+          <p class="text-danger">Total Amount: ${{ this.final_total }}</p>
         </div>
         <div class="modal-footer">
           <button
             type="button"
-            @click="closeOrderModal"
             class="btn btn-secondary"
             data-dismiss="modal"
+            @click="closeOrderModal"
           >
             Close
           </button>
-          <button type="button" class="btn btn-primary">Confirm Order</button>
+          <button type="button" @click="sendOrder" class="btn btn-primary">
+            Confirm Order
+          </button>
         </div>
       </div>
     </div>
@@ -175,11 +179,14 @@ import {
 } from 'vee-validate';
 import { required, email } from '@vee-validate/rules';
 import { localize } from '@vee-validate/i18n';
-import { Modal } from 'bootstrap';
-import { mapState } from 'pinia';
+import { Modal, Toast } from 'bootstrap';
+import { mapState, mapActions } from 'pinia';
+import Loading from 'vue-loading-overlay';
+import axios from 'axios';
 import cartStore from '../stores/cartStore';
 import en from '../en.json';
 
+const { VITE_URL, VITE_API } = import.meta.env;
 defineRule('required', required);
 defineRule('email', email);
 
@@ -195,9 +202,11 @@ export default {
     VForm,
     VField,
     ErrorMessage,
+    Loading,
   },
   data() {
     return {
+      isLoading: false,
       orderModal: null,
       user: {
         email: '',
@@ -211,24 +220,23 @@ export default {
     };
   },
   computed: {
-    ...mapState(cartStore, [
-      'cart',
-      'final_total',
-      'total',
-      'discount',
-    ]),
+    ...mapState(cartStore, ['cart', 'final_total', 'total', 'discount']),
   },
   methods: {
+    ...mapActions(cartStore, ['getCart', 'deleteCartPinia']),
     openOrderModal() {
       this.orderModal.show();
     },
     closeOrderModal() {
       this.orderModal.hide();
     },
+    sendOrder() {
+      this.isLoading = true;
+      this.deleteCart();
+      this.showToast('Order submitted successfully', 'success');
+    },
     onSubmit() {
       this.openOrderModal();
-      console.log(this.user);
-      // 表单提交逻辑
     },
     isPhone(value) {
       const phoneNumber = /^(09)[0-9]{8}$/;
@@ -251,6 +259,40 @@ export default {
       return countryName.test(value)
         ? true
         : 'Country is required and start with Uppercase.';
+    },
+    showToast(message, type) {
+      const toastEl = document.createElement('div');
+      toastEl.classList.add(
+        'toast',
+        'align-items-center',
+        'text-white',
+        type === 'success' ? 'bg-success' : 'bg-danger',
+        'border-0',
+        'position-fixed',
+        'top-50',
+        'start-50',
+        'translate-middle',
+      );
+      toastEl.role = 'alert';
+      toastEl.innerHTML = `
+        <div class="d-flex">
+          <div class="toast-body">
+            <i class="bi bi-check-circle"></i> ${message}
+          </div>
+          <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+      `;
+      document.body.appendChild(toastEl);
+      const toast = new Toast(toastEl, { autohide: true, delay: 500 });
+      toast.show();
+    },
+    deleteCart() {
+      const api = `${VITE_URL}/api/${VITE_API}/carts`;
+      axios.delete(api).then(() => {
+        this.orderModal.hide();
+        this.isLoading = false;
+        this.deleteCartPinia();
+      });
     },
   },
   mounted() {

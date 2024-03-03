@@ -15,23 +15,28 @@
       <swiper-slide>
         <img
           loop
-          src="https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1443&q=80"
+          src="../poster1.jpg"
           alt=""
         />
+        <div class="text-overlay">Incoming Big Sale!</div>
+
       </swiper-slide>
       <swiper-slide>
         <img
           loop
-          src="https://images.unsplash.com/photo-1494256997604-768d1f608cac?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1529&q=80"
+          src="../poster2.jpg"
           alt=""
         />
+        <div class="text-overlay">Join Us on Reading Fieldtrip!</div>
+
       </swiper-slide>
       <swiper-slide>
         <img
           loop
-          src="https://images.unsplash.com/photo-1478098711619-5ab0b478d6e6?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80"
+          src="../poster3.jpg"
           alt=""
         />
+        <div class="text-overlay">Meet your Favorite Author!</div>
       </swiper-slide>
     </swiper>
   </div>
@@ -68,5 +73,19 @@ export default {
   width: 100%;
   height: 100%;
   object-fit: cover;
+}
+.text-overlay {
+  position: absolute;
+  bottom: 25px;
+  left: 0;
+  width: 100%;
+  text-align: center;
+  color: #fff;
+  font-size: 20px; /* 根據需要調整 */
+  background-color: rgba(0, 0, 0, 0.5); /* 半透明背景 */
+  padding: 10px 0; /* 上下邊距 */
+}
+.swiper-slide {
+  position: relative; /* 為了 text-overlay 的絕對定位 */
 }
 </style>

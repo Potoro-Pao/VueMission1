@@ -48,9 +48,11 @@ export default defineStore('cartStore', {
           this.getCart();
         });
     },
+    deleteCartPinia() {
+      this.getCart();
+    },
 
     resetShowToast() {
-      console.log(this.showToast);
       this.showToast = '';
     },
     applyDiscount(couponCode) {
