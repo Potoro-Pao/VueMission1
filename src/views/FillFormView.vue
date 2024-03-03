@@ -3,7 +3,9 @@
     <div class="row justify-content-center">
       <div class="col-md-6">
         <h1>Complete Your Information</h1>
-        <VForm @submit.prevent="onSubmit" v-slot="{ errors }">
+        <!-- <v-form ref="form" class="col-md-6" v-slot="{ errors }" @submit="createOrder"> -->
+
+        <VForm @submit="onSubmit" v-slot="{ errors }">
           <div class="mb-3">
             <label for="email">Email</label>
             <VField
@@ -104,11 +106,60 @@
           </div>
 
           <div class="text-end">
-            <router-link class="btn btn-danger text-white" @click="onSubmit" :to="`/order`"
-              >Review Order</router-link
-            >
+            <div class="text-end">
+              <button type="submit" class="btn btn-danger text-white">Review Order</button>
+
+            </div>
           </div>
         </VForm>
+      </div>
+    </div>
+  </div>
+  <!-- 側滑菜單，使用Bootstrap的modal -->
+  <div
+    class="modal right fade"
+    ref="orderModal"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="orderModalLabel"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="orderModalLabel">Order Summary</h5>
+          <button
+            type="button"
+            class="close"
+            data-dismiss="modal"
+            aria-label="Close"
+          >
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div v-for = "goods in this.cart" :key = goods.id>
+            <div><strong>{{goods.product.title}}</strong></div>
+            <div>${{goods.product.price}}</div>
+          </div>
+          <hr>
+          <p> Origin Price: {{this.total}}</p>
+          <p class="text-success">Discount: {{this.discount}}</p>
+          <p>Email: {{ user.email }}</p>
+          <p>Your Name: {{ user.name }}</p>
+          <p class="text-danger">Total Amount: ${{this.final_total}}</p>
+        </div>
+        <div class="modal-footer">
+          <button
+            type="button"
+            @click="closeOrderModal"
+            class="btn btn-secondary"
+            data-dismiss="modal"
+          >
+            Close
+          </button>
+          <button type="button" class="btn btn-primary">Confirm Order</button>
+        </div>
       </div>
     </div>
   </div>
@@ -124,6 +175,9 @@ import {
 } from 'vee-validate';
 import { required, email } from '@vee-validate/rules';
 import { localize } from '@vee-validate/i18n';
+import { Modal } from 'bootstrap';
+import { mapState } from 'pinia';
+import cartStore from '../stores/cartStore';
 import en from '../en.json';
 
 defineRule('required', required);
@@ -144,6 +198,7 @@ export default {
   },
   data() {
     return {
+      orderModal: null,
       user: {
         email: '',
         name: '',
@@ -155,8 +210,23 @@ export default {
       },
     };
   },
+  computed: {
+    ...mapState(cartStore, [
+      'cart',
+      'final_total',
+      'total',
+      'discount',
+    ]),
+  },
   methods: {
+    openOrderModal() {
+      this.orderModal.show();
+    },
+    closeOrderModal() {
+      this.orderModal.hide();
+    },
     onSubmit() {
+      this.openOrderModal();
       console.log(this.user);
       // 表单提交逻辑
     },
@@ -182,6 +252,9 @@ export default {
         ? true
         : 'Country is required and start with Uppercase.';
     },
+  },
+  mounted() {
+    this.orderModal = new Modal(this.$refs.orderModal);
   },
 };
 </script>
