@@ -4,7 +4,7 @@
     <div class="row justify-content-center">
       <div class="col-md-6">
         <h1>Complete Your Information</h1>
-        <VForm @submit="onSubmit" v-slot="{ errors }">
+        <VForm ref="orderForm" @submit="onSubmit" v-slot="{ errors }">
           <div class="mb-3">
             <label for="email">Email</label>
             <VField
@@ -232,8 +232,8 @@ export default {
     },
     sendOrder() {
       this.isLoading = true;
-      this.deleteCart();
       this.showToast('Order submitted successfully', 'success');
+      this.deleteCart();
     },
     onSubmit() {
       this.openOrderModal();
@@ -283,7 +283,7 @@ export default {
         </div>
       `;
       document.body.appendChild(toastEl);
-      const toast = new Toast(toastEl, { autohide: true, delay: 500 });
+      const toast = new Toast(toastEl, { autohide: true, delay: 2000 });
       toast.show();
     },
     deleteCart() {
@@ -292,6 +292,7 @@ export default {
         this.orderModal.hide();
         this.isLoading = false;
         this.deleteCartPinia();
+        window.location.reload();
       });
     },
   },

@@ -36,9 +36,7 @@
           aria-live="assertive"
           aria-atomic="true"
         >
-          <div :class="['toast-body', toastClass]">
-            Your coupon is invalid!
-          </div>
+          <div :class="['toast-body', toastClass]">Your coupon is invalid!</div>
         </div>
       </div>
     </div>
@@ -73,8 +71,11 @@
               <!-- New column for actions -->
             </tr>
           </thead>
-          <tbody>
-            <tr v-for="(item, index) in cart" :key="item.id">
+          <tbody v-if="this.cart.length > 0">
+            <tr
+              v-for="(item, index) in cart"
+              :key="item.id"
+            >
               <th scope="row" class="align-middle">{{ index + 1 }}</th>
               <td class="align-middle">
                 <div class="row">
@@ -139,6 +140,10 @@
               </td>
             </tr>
           </tbody>
+          <tbody v-else>
+            <tr><td colspan="6" class="text-center text-danger">
+              There is nothing in the cart!</td></tr>
+          </tbody>
         </table>
         <tfoot>
           <tr>
@@ -184,8 +189,12 @@
         </tfoot>
       </div>
     </div>
-    <router-link to="/form" class="btn btn-info">Proceed to Checkout</router-link>
-
+    <router-link to="/form" v-if="this.cart.length > 0" class="btn btn-info"
+      >Proceed to Checkout</router-link
+    >
+    <router-link to="/products" v-else class="btn btn-danger"
+      >Browse More Products</router-link
+    >
   </div>
 </template>
 
