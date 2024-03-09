@@ -1,4 +1,5 @@
 <template>
+  <loading v-model:active="isLoading"></loading>
   <div class="container mt-4">
     <div class="container mt-4">
       <!-- 其他内容 -->
@@ -72,10 +73,7 @@
             </tr>
           </thead>
           <tbody v-if="this.cart.length > 0">
-            <tr
-              v-for="(item, index) in cart"
-              :key="item.id"
-            >
+            <tr v-for="(item, index) in cart" :key="item.id">
               <th scope="row" class="align-middle">{{ index + 1 }}</th>
               <td class="align-middle">
                 <div class="row">
@@ -141,8 +139,11 @@
             </tr>
           </tbody>
           <tbody v-else>
-            <tr><td colspan="6" class="text-center text-danger">
-              There is nothing in the cart!</td></tr>
+            <tr>
+              <td colspan="6" class="text-center text-danger">
+                There is nothing in the cart!
+              </td>
+            </tr>
           </tbody>
         </table>
         <tfoot>
@@ -189,29 +190,51 @@
         </tfoot>
       </div>
     </div>
-    <router-link to="/form" v-if="this.cart.length > 0" class="btn btn-info"
-      >Proceed to Checkout</router-link
-    >
-    <router-link to="/products" v-else class="btn btn-danger"
-      >Browse More Products</router-link
-    >
+    <div class="row mb-3">
+      <div class="col-12 d-flex justify-content-between">
+        <div>
+          <router-link
+            to="/form"
+            v-if="this.cart.length > 0"
+            class="btn btn-info"
+          >
+            Proceed to Checkout
+          </router-link>
+          <router-link to="/products" v-else class="btn btn-danger">
+            Browse More Products
+          </router-link>
+        </div>
+        <button
+          class="btn btn-danger"
+          v-if="this.cart.length > 0"
+          @click.prevent="removeAllItems"
+        >
+          Remove All
+        </button>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
 import { mapActions, mapState } from 'pinia';
 import { Toast } from 'bootstrap';
+import Loading from 'vue-loading-overlay';
 
 import cartStore from '../stores/cartStore';
 
 export default {
   data() {
     return {
+      isLoading: false,
       couponCode: '',
       toastBody: null,
       toastClass: '',
       defaultCouponValue: 0,
     };
+  },
+  components: {
+    Loading,
   },
   computed: {
     ...mapState(cartStore, [
@@ -221,13 +244,20 @@ export default {
       'discount',
       'showToast',
       'refreshDiscount',
-    ]), // 将 cart 映射到 computed 属性
+      'loading',
+    ]),
   },
-  watch() {
-    if (this.showToast === '已套用優惠券') {
-      this.onToastCalled();
-    }
+  watch: {
+    loading(n) {
+      this.isLoading = n;
+    },
+    showToast(newVal) {
+      if (newVal === '已套用優惠券') {
+        this.onToastCalled();
+      }
+    },
   },
+
   methods: {
     ...mapActions(cartStore, [
       'getCart',
@@ -235,6 +265,7 @@ export default {
       'changeCartQty',
       'applyDiscount',
       'resetShowToast',
+      'deleteCart',
     ]),
     applyCoupon() {
       this.applyDiscount(this.couponCode);
@@ -253,6 +284,10 @@ export default {
         this.invalidToast.show();
       }
       this.resetShowToast();
+    },
+    removeAllItems() {
+      this.isLoading = this.loading;
+      this.deleteCart();
     },
   },
   mounted() {

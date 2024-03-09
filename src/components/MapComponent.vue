@@ -76,16 +76,16 @@ export default {
           this.marker = L.marker([this.latitude, this.longitude]).addTo(
             this.map,
           );
-          const imageUrl = this.bookPhoto;
           const popupContent = `
-    <div style="display: flex; align-items: center;">
-      <div style="flex: 1;">
-        <img src="${imageUrl}" alt="Image" style="width: 100px; height: auto;">
-      </div>
-      <div style="flex: 2; margin-left: 10px;">
-        <p>SomeOne from ${this.city}, ${this.country} <br> bought <strong>${this.bookTitle}</strong> with free delivery</p>
-      </div>
-    </div>`;
+                            <div style="display: flex; align-items: center;">
+                            <div style="flex: 1;">
+                            <img src="${this.bookPhoto}" alt="Image" style="width: 100px; height: auto;">
+                            </div>
+                            <div style="flex: 2; margin-left: 10px;">
+                            <p>SomeOne from ${this.city}, ${this.country} <br> bought <strong>${this.bookTitle}</strong> with free delivery</p>
+                            </div>
+                            </div>`;
+
           this.marker.bindPopup(popupContent).openPopup();
         } else {
           console.error('Map container not found');
@@ -95,16 +95,15 @@ export default {
     updateMap() {
       this.map.setView([this.latitude, this.longitude], 8);
       this.marker.setLatLng([this.latitude, this.longitude]);
-      const imageUrl = this.bookPhoto;
       const popupContent = `
-    <div style="display: flex; align-items: center;">
-      <div style="flex: 1;">
-        <img src="${imageUrl}" alt="Image" style="width: 100px; height: auto;">
-      </div>
-      <div style="flex: 2; margin-left: 10px;">
-        <p>SomeOne from ${this.city}, ${this.country} <br> bought <strong>${this.bookTitle}</strong> with free delivery</p>
-      </div>
-    </div>`;
+                            <div style="display: flex; align-items: center;">
+                            <div style="flex: 1;">
+                            <img src="${this.bookPhoto}" alt="Image" style="width: 100px; height: auto;">
+                            </div>
+                            <div style="flex: 2; margin-left: 10px;">
+                            <p>SomeOne from ${this.city}, ${this.country} <br> bought <strong>${this.bookTitle}</strong> with free delivery</p>
+                            </div>
+                            </div>`;
       this.marker.getPopup().setContent(popupContent).openPopup();
     },
   },

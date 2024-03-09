@@ -10,6 +10,7 @@ export default defineStore('cartStore', {
     total: 0,
     discount: 0,
     showToast: '',
+    loading: false,
   }),
   actions: {
     getCart() {
@@ -35,6 +36,14 @@ export default defineStore('cartStore', {
     removeCartItem(id) {
       axios.delete(`${VITE_URL}/api/${VITE_API}/cart/${id}`).then(() => {
         this.getCart();
+      });
+    },
+    deleteCart() {
+      this.loading = true;
+      const api = `${VITE_URL}/api/${VITE_API}/carts`;
+      axios.delete(api).then(() => {
+        this.loading = false;
+        this.deleteCartPinia();
       });
     },
     changeCartQty(item, qty = 1) {
