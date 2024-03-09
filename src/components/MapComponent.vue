@@ -38,6 +38,10 @@ export default {
     }, 10000);
   },
   beforeUnmount() {
+    if (this.map) {
+      this.map.remove();
+    }
+
     if (this.intervalId) {
       clearInterval(this.intervalId);
     }
@@ -57,17 +61,36 @@ export default {
   },
   methods: {
     ...mapActions(mapStore, ['getRandom', 'getProducts']),
+
     getMap() {
-      this.map = L.map(this.$refs.mapContainer).setView(
-        [this.latitude, this.longitude],
-        8,
-      );
-      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution:
-          '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-      }).addTo(this.map);
-      this.marker = L.marker([this.latitude, this.longitude]).addTo(this.map);
-      this.marker.bindPopup(`${this.city}, ${this.country}`).openPopup();
+      this.$nextTick(() => {
+        if (this.$refs.mapContainer) {
+          this.map = L.map(this.$refs.mapContainer).setView(
+            [this.latitude, this.longitude],
+            8,
+          );
+          L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution:
+              '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+          }).addTo(this.map);
+          this.marker = L.marker([this.latitude, this.longitude]).addTo(
+            this.map,
+          );
+          const imageUrl = this.bookPhoto;
+          const popupContent = `
+    <div style="display: flex; align-items: center;">
+      <div style="flex: 1;">
+        <img src="${imageUrl}" alt="Image" style="width: 100px; height: auto;">
+      </div>
+      <div style="flex: 2; margin-left: 10px;">
+        <p>SomeOne from ${this.city}, ${this.country} <br> bought <strong>${this.bookTitle}</strong> with free delivery</p>
+      </div>
+    </div>`;
+          this.marker.bindPopup(popupContent).openPopup();
+        } else {
+          console.error('Map container not found');
+        }
+      });
     },
     updateMap() {
       this.map.setView([this.latitude, this.longitude], 8);
