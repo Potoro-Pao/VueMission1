@@ -2,6 +2,7 @@
 import { defineStore } from 'pinia';
 import axios from 'axios';
 
+const { VITE_URL, VITE_API } = import.meta.env;
 export default defineStore('mapStore', {
   state: () => ({
     country: null,
@@ -10,6 +11,7 @@ export default defineStore('mapStore', {
     longitude: null,
     bookPhoto: null,
     bookTitle: null,
+    products: null,
   }),
   actions: {
     updateLocation({
@@ -22,11 +24,16 @@ export default defineStore('mapStore', {
     },
     async getRandom() {
       try {
+        // 確保產品加載
+        if (!this.products) {
+          await this.getProducts();
+        }
+        // 產品以加載可以繼續隨機選取產品
+        this.getRandomBooks();
         const res = await axios.get('https://randomuser.me/api/');
         if (res.data && res.data.results && res.data.results.length > 0) {
           const { country, city } = res.data.results[0].location;
           await this.getCountryCoordinates(country, city);
-          this.getBooks();
         }
       } catch (error) {
         console.log(error);
@@ -46,16 +53,28 @@ export default defineStore('mapStore', {
           });
         }
       } catch (error) {
-        console.error('获取坐标失败:', error);
+        console.error('獲取座標失敗:', error);
+      }
+    },
+    async getProducts() {
+      try {
+        const api = `${VITE_URL}/api/${VITE_API}/products/all`;
+        const response = await axios.get(api);
+        this.products = response.data.products;
+      } catch (error) {
+        console.error('獲取產品失敗:', error);
+        this.products = [];
       }
     },
 
-    getBooks() {
-      const booksphotos = ['https://im1.book.com.tw/image/getImage?i=https://www.books.com.tw/img/F01/722/67/F017226772.jpg&v=60be1cb3k&w=348&h=348', 'https://im2.book.com.tw/image/getImage?i=https://www.books.com.tw/img/F01/156/62/F011566277.jpg&v=5dc17b1dk&w=348&h=348', 'https://im2.book.com.tw/image/getImage?i=https://www.books.com.tw/img/F01/986/47/F019864769.jpg&v=64185ee5k&w=348&h=348'];
-      const booktitles = ['Simulacron3', 'Abhorsen', 'Eragon'];
-      const randomIndex = Math.floor(Math.random() * booksphotos.length);
-      this.bookPhoto = booksphotos[randomIndex];
-      this.bookTitle = booktitles[randomIndex];
+    getRandomBooks() {
+      if (this.products && this.products.length > 0) {
+        const randomIndex = Math.floor(Math.random() * this.products.length);
+        this.bookPhoto = this.products[randomIndex].imageUrl;
+        this.bookTitle = this.products[randomIndex].title;
+      } else {
+        console.log('產品為空值');
+      }
     },
   },
 });
