@@ -4,8 +4,7 @@
     <BgC></BgC>
     <RouterView></RouterView>
   </div>
-  <FooterC class="mt-6 w-100" style="bottom: 0;"></FooterC>
-
+  <FooterC class="mt-6 w-100" style="bottom: 0"></FooterC>
 </template>
 
 <script>

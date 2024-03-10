@@ -4,7 +4,7 @@
       <div
         class="d-flex align-items-center justify-content-between text-white mb-md-7 mb-4"
       >
-        <a class="text-white h4" href="./index.html">LOGO</a>
+        <a class="text-white h4" href="./index.html">BOOKS</a>
         <ul class="d-flex list-unstyled mb-0 h4">
           <li>
             <a href="#" class=" mx-3" style="color: #f4f4f4;">

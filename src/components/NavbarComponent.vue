@@ -1,5 +1,4 @@
 <template>
-  <div class="container-fluid d-flex flex-column" style="z-index: 1">
     <nav
       class="navbar navbar-expand-lg"
       style="background-color: #504152; padding: 0.5rem 1rem"
@@ -71,7 +70,7 @@
         </ul>
       </div>
     </nav>
-  </div>
+
 </template>
 
 <script>
