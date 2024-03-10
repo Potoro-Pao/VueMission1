@@ -1,8 +1,6 @@
 <template>
   <div>
     <div class="container">
-    <RouterLink to="/">Home</RouterLink> |
-    <RouterLink to="/about">About</RouterLink>
     <h1>About Books</h1>
     <br>
     <h2 style="font-weight:bold">Discover the Boundless World of Literature</h2>

@@ -13,20 +13,32 @@
         </div>
       </div>
       <div class="container mt-5">
-        <div class="row bg-gray">
+        <div class="row">
           <div class="col">
             <div class="row justify-content-center py-7">
               <div class="col-md-6 text-center">
-                <h3>
-                  <strong> Language & World: The Essence of Reading </strong>
+                <h3 class="mb-5">
+                  <strong> The Essence of Reading </strong>
                 </h3>
                 <figure>
-                  <blockquote class="blockquote">
-                    <p>
+                  <blockquote class="blockquote d-flex align-items-center">
+                    <div class="pe-3">
+                      <img
+                        src="/LW.jpg"
+                        style="
+                          object-fit: cover;
+                          width: 100px;
+                          height: 100px;
+                          border-radius: 50%;
+                        "
+                        alt=""
+                      />
+                    </div>
+                    <p class="mb-0">
                       Die Grenzen meiner Sprache sind die Grenzen meiner Welt
                     </p>
                   </blockquote>
-                  <figcaption class="blockquote-footer">
+                  <figcaption class="blockquote-footer ps-9">
                     Ludwig Wittgenstein in
                     <cite title="Source Title"
                       >Logisch-philosophische Abhandlung</cite
@@ -38,13 +50,14 @@
           </div>
         </div>
       </div>
+
       <div class="container mt-5">
         <div class="row mb-5"><h2>Bestselling Books</h2></div>
         <div class="row">
           <div class="col-lg-6 d-flex align-items-center">
             <div class="text-center w-100">
               <h4>The Inheritance Cycle</h4>
-              <p style="line-height: 2rem;">
+              <p style="line-height: 2rem">
                 <strong>The Inheritance Cycle</strong> by Christopher Paolini
                 narrates Eragon and Saphira's battle against the tyrant
                 Galbatorix. A captivating journey of magic, struggle, and
@@ -75,8 +88,8 @@
           <div class="col-lg-6 d-flex align-items-center">
             <!-- 文本在大屏幕上将显示在右侧 -->
             <div class="text-center w-100">
-              <h4>The Blue Ant trilogy </h4>
-              <p class="me-5" style="line-height: 2rem;">
+              <h4>The Blue Ant trilogy</h4>
+              <p class="me-5" style="line-height: 2rem">
                 <strong>The Blue Ant trilogy</strong> is a series of science
                 fiction novels by William Gibson. The novels are Pattern
                 Recognition (2003), Spook Country (2007), and Zero History
@@ -91,7 +104,7 @@
           <div class="col-lg-6 d-flex align-items-center">
             <div class="text-center w-100">
               <h4>The Old Kingdom Chronicles</h4>
-              <p style="line-height: 2rem;">
+              <p style="line-height: 2rem">
                 <strong>The Old Kingdom Chronicles</strong>
                 is a series of fantasy novels by Garth Nix. The series follows
                 the adventures of Sabriel, Lirael, and Abhorsen as they fight to
@@ -106,65 +119,6 @@
               alt="Bestselling Books"
               class="img-fluid"
             />
-          </div>
-        </div>
-      </div>
-
-      <div class="container mb-6">
-        <div class="row mt-5">
-          <div class="col-md-4 mt-md-4">
-            <div class="card border-0 mb-4">
-              <img
-                src="https://images.unsplash.com/photo-1502743780242-f10d2ce370f3?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1916&q=80"
-                class="card-img-top rounded-0"
-                alt="..."
-              />
-              <div class="card-body text-center">
-                <h4>Lorem ipsum</h4>
-                <div class="d-flex justify-content-between">
-                  <p class="card-text text-muted mb-0">
-                    Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed
-                    diam nonumy eirmod.
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-4 mt-md-4">
-            <div class="card border-0 mb-4">
-              <img
-                src="https://images.unsplash.com/photo-1502743780242-f10d2ce370f3?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1916&q=80"
-                class="card-img-top rounded-0"
-                alt="..."
-              />
-              <div class="card-body text-center">
-                <h4>Lorem ipsum</h4>
-                <div class="d-flex justify-content-between">
-                  <p class="card-text text-muted mb-0">
-                    Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed
-                    diam nonumy eirmod.
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-4 mt-md-4">
-            <div class="card border-0 mb-4">
-              <img
-                src="https://images.unsplash.com/photo-1502743780242-f10d2ce370f3?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1916&q=80"
-                class="card-img-top rounded-0"
-                alt="..."
-              />
-              <div class="card-body text-center">
-                <h4>Lorem ipsum</h4>
-                <div class="d-flex justify-content-between">
-                  <p class="card-text text-muted mb-0">
-                    Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed
-                    diam nonumy eirmod.
-                  </p>
-                </div>
-              </div>
-            </div>
           </div>
         </div>
       </div>
