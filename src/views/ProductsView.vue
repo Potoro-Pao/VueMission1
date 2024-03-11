@@ -121,7 +121,6 @@ export default {
       const api = `${VITE_URL}/api/${VITE_API}/products?page=${page}&category=${categories}`;
       // /products?category=Drama
       axios.get(api).then((res) => {
-        console.log(res);
         this.products = res.data.products;
         this.pages = res.data.pagination;
         this.isLoading = false;

@@ -23,13 +23,14 @@ export default defineStore('cartStore', {
         // 不這樣寫的話，就算已使用優惠券也顯示不出來
       });
     },
-    addToCart(id) {
+    addToCart(id, qty = 1) {
       const api = `${VITE_URL}/api/${VITE_API}/cart`;
       const order = {
         product_id: id,
-        qty: 1,
+        qty,
       };
       axios.post(api, { data: order }).then(() => {
+        console.log(qty);
         this.getCart();
       });
     },

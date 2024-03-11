@@ -42,12 +42,25 @@
             <p style="block">Free Delivery Worldwide</p>
 
             <div class="input-group mb-3">
-              <button class="btn btn-outline-secondary" type="button">-</button>
-              <input type="text" class="form-control" value="1" readonly />
-              <button class="btn btn-outline-secondary" type="button">+</button>
+              <button
+                class="btn btn-outline-secondary"
+                v-if="qty > 1"
+                @click="qty--"
+                type="button"
+              >
+                -
+              </button>
+              <input type="text" class="form-control" :value="qty" readonly />
+              <button
+                class="btn btn-outline-secondary"
+                @click="qty++"
+                type="button"
+              >
+                +
+              </button>
             </div>
             <button
-              @click.prevent="addToCart(product.id)"
+              @click.prevent="addToCart(product.id, this.qty)"
               class="btn btn-primary"
             >
               Add to Cart
@@ -70,6 +83,7 @@ export default {
   data() {
     return {
       product: {},
+      qty: 1,
     };
   },
   methods: {
@@ -78,7 +92,6 @@ export default {
       const { id } = this.$route.params;
       axios.get(`${VITE_URL}/api/${VITE_API}/product/${id}`).then((res) => {
         this.product = res.data.product;
-        console.log(res);
       });
     },
   },
