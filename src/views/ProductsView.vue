@@ -68,7 +68,7 @@
             </div>
           </div>
         </div>
-        <pagC :pages="pages" :get-product="getProduct"></pagC>
+        <pagC :pages="pages" :getProduct="getProduct" basePath="#/" />
       </div>
     </div>
   </div>

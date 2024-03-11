@@ -67,6 +67,14 @@
               </div>
             </router-link>
           </li>
+          <li class="nav-item me-4">
+            <router-link
+              class="nav-link"
+              style="color: #eae0d5; font-size: 18px"
+              to="/login"
+              >Log in</router-link
+            >
+          </li>
         </ul>
       </div>
     </nav>

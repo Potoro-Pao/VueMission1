@@ -17,7 +17,7 @@
                 <h5 class="card-title">{{ product.title }}</h5>
                 <p class="card-text">
                   Category <br />
-                  {{ product.content }}
+                  {{ product.description }}
                 </p>
                 <p class="card-text">
                   Short Description <br />

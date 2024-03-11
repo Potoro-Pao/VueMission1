@@ -1,8 +1,7 @@
 <template>
-  <h2>登入Login</h2>
   <div class="container">
     <div class="row justify-content-center">
-      <h1 class="h3 mb-3 font-weight-normal">請先登入</h1>
+      <h1 class="h3 mb-3 font-weight-normal text-center">Admin Log in</h1>
       <div class="col-8">
         <form id="form" class="form-signin" @submit.prevent="loginCheck">
           <div class="form-floating mb-3">

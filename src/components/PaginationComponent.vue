@@ -4,7 +4,10 @@
       <li class="page-item" :class="{ disabled: !pages.has_pre }">
         <router-link
           class="page-link"
-          :to="{ path: '/products', query: { page: pages.current_page - 1 } }"
+          :to="{
+            path: basePath + '/products',
+            query: { page: pages.current_page - 1 },
+          }"
           @click.prevent="getProduct(pages.current_page - 1)"
           >Previous</router-link
         >
@@ -17,8 +20,8 @@
       >
         <a
           class="page-link"
-          :key="page"
-          :href="{ path: '/products', query: { page: page } }"
+          :href="`${basePath}/products?page=${page}`"
+          @click.prevent="getProduct(page)"
           >{{ page }}</a
         >
       </li>
@@ -26,7 +29,10 @@
       <li class="page-item" :class="{ disabled: !pages.has_next }">
         <router-link
           class="page-link"
-          :to="{ path: '/products', query: { page: pages.current_page + 1 } }"
+          :to="{
+            path: basePath + '/products',
+            query: { page: pages.current_page + 1 },
+          }"
           @click.prevent="getProduct(pages.current_page + 1)"
           >Next</router-link
         >
@@ -36,6 +42,6 @@
 </template>
 <script>
 export default {
-  props: ['pages', 'getProduct'],
+  props: ['pages', 'getProduct', 'basePath'],
 };
 </script>
