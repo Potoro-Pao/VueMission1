@@ -9,9 +9,9 @@
   >
     <div class="modal-dialog">
       <div class="modal-content border-0">
-        <div class="modal-header bg-danger text-white">
+        <div v-if ="tempProduct.title" class="modal-header bg-danger text-white">
           <h5 id="delProductModalLabel" class="modal-title">
-            <span>刪除產品</span>
+            <span>Delete the Product</span>
           </h5>
           <button
             type="button"
@@ -20,21 +20,38 @@
             aria-label="Close"
           ></button>
         </div>
-        <div class="modal-body">
-          是否刪除
-          <strong class="text-danger">{{ tempProduct.title }}</strong>
-          商品(刪除後將無法恢復)。
+        <div v-else class="modal-header bg-danger text-white">
+          <h5 id="delProductModalLabel" class="modal-title">
+            <span>Delete the Order</span>
+          </h5>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+          ></button>
         </div>
+        <div class="modal-body" v-if="tempProduct.title">
+          Are you sure you want to delete
+          <strong class="text-danger">{{ tempProduct.title }}</strong
+          >? This action cannot be undone.
+        </div>
+        <div class="modal-body" v-else>
+          Are you sure you want to delete the order
+          <strong class="text-danger">{{ tempProduct.id }}</strong
+          > ? This action cannot be undone.
+        </div>
+
         <div class="modal-footer">
           <button
             type="button"
             class="btn btn-outline-secondary"
             data-bs-dismiss="modal"
           >
-            取消
+            Cancel
           </button>
           <button type="button" class="btn btn-danger" @click="deleteProduct">
-            確認刪除
+            Confirm
           </button>
         </div>
       </div>
@@ -46,7 +63,12 @@
 import { Modal } from 'bootstrap';
 
 export default {
-  props: ['tempProduct', 'deleteProduct'],
+  props: {
+    tempProduct: {
+      default: () => ({ title: '' }),
+    },
+    deleteProduct: Function,
+  },
   data() {
     return {
       modalDel: null,

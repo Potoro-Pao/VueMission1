@@ -70,6 +70,13 @@
             to="/about"
             >About</router-link
           >
+          <router-link
+            v-else
+            class="nav-link"
+            style="color: #eae0d5; font-size: 18px"
+            to="/admin/coupon"
+            >Coupon</router-link
+          >
         </li>
       </ul>
       <ul class="navbar-nav mr-auto">

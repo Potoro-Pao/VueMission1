@@ -76,9 +76,8 @@
         {{ product.content }}
       </p>
     </div>
-    <div class="container mt-6">
+    <div class="container">
       <div class="row">
-        <div class="col-md-8">
           <h3
             v-if="product.imagesUrl && product.imagesUrl.length > 0"
             class="mb-3"
@@ -90,12 +89,11 @@
             class="d-flex flex-row"
           >
             <div v-for="(image, index) in product.imagesUrl" :key="index">
-              <img :src="image" class="img-fluid mb-2" alt="Product Image" />
+              <img :src="image" class="img-fluid mb-2 pe-3" alt="Product Image" />
             </div>
           </div>
         </div>
       </div>
-    </div>
   </div>
 </template>
 
@@ -121,6 +119,7 @@ export default {
   },
   methods: {
     formated(format) {
+      console.log(format);
       this.format = JSON.parse(format);
     },
 
@@ -129,6 +128,7 @@ export default {
       const { id } = this.$route.params;
       axios.get(`${VITE_URL}/api/${VITE_API}/product/${id}`).then((res) => {
         this.product = res.data.product;
+        console.log(this.product);
         this.formated(this.product.description);
       });
     },

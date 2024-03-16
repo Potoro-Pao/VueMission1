@@ -48,7 +48,7 @@
               <div class="card-body d-flex flex-column">
                 <!-- 调整了这里 -->
                 <h5 class="card-title">{{ product.title }}</h5>
-                <p class="card-text flex-grow-1">{{ product.price }} 元</p>
+                <p class="card-text flex-grow-1">NTD ${{ product.price }}</p>
                 <!-- 使用flex-grow -->
                 <div class="mt-2 mb-2">
                   <!-- 确保按钮在底部 -->
@@ -97,7 +97,7 @@ export default {
         'History',
         'Young Adult',
         'Drama',
-        'novel',
+        'Novel',
         'Sci-Fi',
         'Murder',
         'TextBook',
