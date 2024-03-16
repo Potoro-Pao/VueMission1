@@ -27,7 +27,7 @@
             <button
               type="button"
               class="btn btn-primary"
-              @click="showOrderDetail(order.id)"
+              @click="showOrderDetail(order)"
             >
               View Detail
             </button>
@@ -43,59 +43,24 @@
       </tbody>
     </table>
   </div>
+  <DOM
+    :temp-product="tempProduct"
+    :selected-order="selectedOrder"
+    :update-product="updateProduct"
+    ref="dOrderModal"
+  ></DOM>
 
-  <div
-    class="modal fade"
-    ref="updateOrderModal"
-    tabindex="-1"
-    aria-labelledby="updateOrderModalLabel"
-    aria-hidden="true"
-  >
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="updateOrderModalLabel">Update Order</h5>
-          <button
-            type="button"
-            class="btn-close"
-            data-bs-dismiss="modal"
-            aria-label="Close"
-          ></button>
-        </div>
-        <div class="modal-body">
-          <!-- Form for updating order will go here -->
-          <div class="mb-3">
-            <label for="orderStatus" class="form-label">Payment Status</label>
-            <select class="form-select" v-model="selectedOrder.is_paid">
-              <option value="true">Paid</option>
-              <option value="false">Unpaid</option>
-            </select>
-          </div>
-        </div>
-        <div class="modal-footer">
-          <button
-            type="button"
-            class="btn btn-secondary"
-            data-bs-dismiss="modal"
-          >
-            Close
-          </button>
-          <button type="button" class="btn btn-primary" @click="updateOrder">
-            Update
-          </button>
-        </div>
-      </div>
-    </div>
-  </div>
-  <!-- Update Order Modal code remains the same as provided -->
-
-  <DDM :temp-product="tempProduct" :delete-product="deleteOrder" ref="dModal"></DDM>
+  <DDM
+    :selected-order="selectedOrder"
+    :delete-product="deleteOrder"
+    ref="dModal"
+  ></DDM>
 </template>
 
 <script>
 import axios from 'axios';
-import { Modal } from 'bootstrap';
 import DDM from '../../components/dashboardDelModal.vue';
+import DOM from '../../components/dashboardOrderModal.vue';
 
 const { VITE_URL, VITE_API } = import.meta.env;
 export default {
@@ -103,16 +68,16 @@ export default {
     return {
       orders: [],
       modal: null,
-      selectedOrder: { is_paid: false },
+      selectedOrder: {},
       tempProduct: {},
     };
   },
   components: {
     DDM,
+    DOM,
   },
   methods: {
     prepareDeleteOrder(orderId) {
-      console.log(orderId);
       this.tempProduct.id = orderId;
       this.$refs.dModal.openDeleteModal();
     },
@@ -123,7 +88,6 @@ export default {
         .then(() => {
           this.getOrders(); // Refresh the orders list
           this.$refs.dModal.closeDeleteModal(); // Close the DDM modal after successful deletion
-          this.modal.hide();
         })
         .catch((error) => {
           console.error('Error deleting order:', error);
@@ -133,18 +97,28 @@ export default {
       const api = `${VITE_URL}/api/${VITE_API}/admin/orders`;
       axios.get(api).then((res) => {
         this.orders = res.data.orders;
-        console.log(this.orders);
       });
     },
-    showOrderDetail(orderId) {
-      this.selectedOrder = this.orders.find((order) => order.id === orderId);
-      if (this.modal && this.selectedOrder) {
-        this.modal.show();
-      }
+    showOrderDetail(clickedOrder) {
+      this.selectedOrder = this.orders.find(
+        (order) => order.id === clickedOrder.id,
+      );
+      this.$refs.dOrderModal.openModal();
+    },
+
+    updateProduct() {
+      const api = `${VITE_URL}/api/${VITE_API}/admin/order/${this.selectedOrder.id}`;
+      axios
+        .put(api, { data: this.selectedOrder })
+        .then((res) => {
+          this.products = res.data.products;
+          this.getOrders();
+          this.$refs.dOrderModal.closeModal();
+        })
+        .catch((err) => console.log(err));
     },
   },
   mounted() {
-    this.modal = new Modal(this.$refs.updateOrderModal);
     const token = document.cookie.replace(
       /(?:(?:^|.*;\s*)hexVueToken\s*=\s*([^;]*).*$)|^.*$/,
       '$1',

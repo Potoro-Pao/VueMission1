@@ -78,22 +78,27 @@
     </div>
     <div class="container">
       <div class="row">
-          <h3
-            v-if="product.imagesUrl && product.imagesUrl.length > 0"
-            class="mb-3"
-          >
-            Image Gallery
-          </h3>
-          <div
-            v-if="product.imagesUrl && product.imagesUrl.length > 0"
-            class="d-flex flex-row"
-          >
-            <div v-for="(image, index) in product.imagesUrl" :key="index">
-              <img :src="image" class="img-fluid mb-2 pe-3" alt="Product Image" />
-            </div>
+        <h3
+          v-if="product.imagesUrl && product.imagesUrl.length > 0"
+          class="mb-3"
+        >
+          Image Gallery
+        </h3>
+        <div
+          v-if="product.imagesUrl && product.imagesUrl.length > 0"
+          class="d-flex flex-row"
+        >
+          <div v-for="(image, index) in product.imagesUrl" :key="index">
+            <img
+              :src="image"
+              class="img-fluid mb-2 pe-3"
+              style="height: 300px; object-fit: cover"
+              alt="Product Image"
+            />
           </div>
         </div>
       </div>
+    </div>
   </div>
 </template>
 
