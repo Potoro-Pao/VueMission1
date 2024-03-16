@@ -4,7 +4,7 @@
     <BgC></BgC>
     <RouterView></RouterView>
   </div>
-  <FooterC class="mt-6 w-100" style="bottom: 0"></FooterC>
+  <footer-c :basePath="'#/'" class="mt-6 w-100"></footer-c>
 </template>
 
 <script>
