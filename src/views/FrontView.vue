@@ -1,6 +1,6 @@
 <template>
   <div class="position-relative" style="min-height: 100vh">
-    <NavC></NavC>
+    <NavC :basePath="'#/'"></NavC>
     <BgC></BgC>
     <RouterView></RouterView>
   </div>
