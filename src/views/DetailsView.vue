@@ -1,7 +1,6 @@
 <template>
   <div class="container my-5">
     <div class="row">
-      <!-- Product Image & Details Card -->
       <div class="col-lg-8">
         <div class="card">
           <div class="row g-0">
@@ -15,13 +14,13 @@
             <div class="col-md-7">
               <div class="card-body">
                 <h5 class="card-title">{{ product.title }}</h5>
+                <hr class="my-4" />
                 <p class="card-text">
-                  Category <br />
-                  {{ product.description }}
-                </p>
-                <p class="card-text">
-                  Short Description <br />
-                  {{ product.content }}
+                  <strong>Book Info</strong> <br /><br />
+                  Author: {{ this.format.author }}<br />
+                  ISBN: {{ this.format.ISBN }}<br />
+                  Pages: {{ this.format.pages }}<br />
+                  Publisher: {{ this.format.publisher }}<br />
                 </p>
               </div>
             </div>
@@ -70,6 +69,34 @@
       </div>
     </div>
   </div>
+  <div class="container">
+    <div class="row">
+      <h3>Short Description</h3>
+      <p class="card-text" style="line-height: 2; font-size: 1.125rem">
+        {{ product.content }}
+      </p>
+    </div>
+    <div class="container mt-6">
+      <div class="row">
+        <div class="col-md-8">
+          <h3
+            v-if="product.imagesUrl && product.imagesUrl.length > 0"
+            class="mb-3"
+          >
+            Image Gallery
+          </h3>
+          <div
+            v-if="product.imagesUrl && product.imagesUrl.length > 0"
+            class="d-flex flex-row"
+          >
+            <div v-for="(image, index) in product.imagesUrl" :key="index">
+              <img :src="image" class="img-fluid mb-2" alt="Product Image" />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -84,14 +111,25 @@ export default {
     return {
       product: {},
       qty: 1,
+      format: {
+        author: '',
+        ISBN: '',
+        pages: '',
+        publisher: '',
+      },
     };
   },
   methods: {
+    formated(format) {
+      this.format = JSON.parse(format);
+    },
+
     ...mapActions(cartStore, ['addToCart']),
     getProduct() {
       const { id } = this.$route.params;
       axios.get(`${VITE_URL}/api/${VITE_API}/product/${id}`).then((res) => {
         this.product = res.data.product;
+        this.formated(this.product.description);
       });
     },
   },
