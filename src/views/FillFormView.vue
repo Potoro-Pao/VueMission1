@@ -45,7 +45,7 @@
               :class="{ 'is-invalid': errors['phone'] }"
               placeholder="Telephone"
               :rules="isPhone"
-              v-model="user.phone"
+              v-model="user.tel"
             />
             <ErrorMessage name="phone" class="invalid-feedback" />
           </div>
@@ -211,7 +211,7 @@ export default {
       user: {
         email: '',
         name: '',
-        phone: '',
+        tel: '',
         country: '',
         city: '',
         address: '',
@@ -224,19 +224,34 @@ export default {
   },
   methods: {
     ...mapActions(cartStore, ['getCart', 'deleteCartPinia']),
-    openOrderModal() {
-      this.orderModal.show();
-    },
-    closeOrderModal() {
-      this.orderModal.hide();
-    },
     sendOrder() {
+      const apiFormat = {
+        data: {
+          user: {
+            name: this.user.name,
+            email: this.user.email,
+            tel: this.user.tel,
+            address: this.user.address,
+          },
+          message: this.user.message,
+        },
+      };
       this.isLoading = true;
       this.showToast('Order submitted successfully', 'success');
-      this.deleteCart();
+      const api = `${VITE_URL}/api/${VITE_API}/order`;
+      // 假设 `/checkorder` 是您路由配置中的一个有效路径
+      axios.post(api, apiFormat).then((res) => {
+        this.isLoading = false;
+        this.getCart();
+        this.$router.push({
+          path: '/checkorder',
+          query: { data: JSON.stringify(res.data) },
+        });
+      });
     },
     onSubmit() {
-      this.openOrderModal();
+      // this.openOrderModal();
+      this.sendOrder();
     },
     isPhone(value) {
       const phoneNumber = /^(09)[0-9]{8}$/;
@@ -285,15 +300,6 @@ export default {
       document.body.appendChild(toastEl);
       const toast = new Toast(toastEl, { autohide: true, delay: 2000 });
       toast.show();
-    },
-    deleteCart() {
-      const api = `${VITE_URL}/api/${VITE_API}/carts`;
-      axios.delete(api).then(() => {
-        this.orderModal.hide();
-        this.isLoading = false;
-        this.deleteCartPinia();
-        window.location.reload();
-      });
     },
   },
   mounted() {

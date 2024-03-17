@@ -19,7 +19,7 @@
           <td>
             {{ new Date(order.create_at * 1000).toLocaleDateString('zh-TW') }}
           </td>
-          <td>$ {{ order.total }}</td>
+          <td>$ {{ Math.round(order.total) }}</td>
           <td :style="{ color: order.is_paid ? 'green' : 'black' }">
             {{ order.is_paid ? 'Paid' : 'Unpaid' }}
           </td>
