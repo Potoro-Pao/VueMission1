@@ -1,18 +1,10 @@
 <template>
+<div class="position-relative" style="min-height: 100vh">
   <NavC basePath="/admin"></NavC>
   <BgC></BgC>
-  <div
-    class="container"
-    style="
-      display: flex;
-      flex-direction: column;
-      min-height: calc(100vh);
-    "
-  >
-    <RouterView></RouterView>
-  </div>
-
-  <footer-c class="mt-6 w-100"></footer-c>
+  <RouterView></RouterView>
+</div>
+<footer-c class="mt-6 w-100"></footer-c>
 </template>
 
 <script>

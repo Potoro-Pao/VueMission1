@@ -68,7 +68,15 @@ export default {
     return {
       orders: [],
       modal: null,
-      selectedOrder: {},
+      selectedOrder: {
+        is_paid: Boolean,
+        user: {
+          name: '',
+          email: '',
+          tel: '',
+          address: '',
+        },
+      },
       tempProduct: {},
     };
   },

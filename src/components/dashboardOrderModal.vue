@@ -102,11 +102,9 @@ export default {
   props: ['selectedOrder', 'tempProduct', 'updateProduct'],
   computed: {
     paymentStatusComputed: {
-      // Getter 返回一个字符串值，用于<select>的v-model绑定
       get() {
         return this.editOrder.is_paid ? 'true' : 'false';
       },
-      // Setter 将传入的字符串值转换为布尔值，并更新editOrder.is_paid
       set(value) {
         this.editOrder.is_paid = value === 'true';
       },
