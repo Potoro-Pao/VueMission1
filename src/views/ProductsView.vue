@@ -2,7 +2,6 @@
   <loading v-model:active="isLoading"></loading>
   <div class="container mt-5">
     <div class="row">
-      <!-- 分類菜單 -->
       <div class="col-md-3">
         <div
           id="collapseOne"
@@ -29,7 +28,6 @@
           </div>
         </div>
       </div>
-      <!-- 產品卡片 -->
       <div class="col-md-8">
         <div class="row">
           <div
@@ -38,7 +36,6 @@
             :key="product.id"
           >
             <div class="card mb-3 w-100 d-flex flex-column">
-              <!-- 加入了flex布局 -->
               <img
                 style="object-fit: cover"
                 :src="product.imageUrl"
@@ -46,12 +43,9 @@
                 alt="產品圖片"
               />
               <div class="card-body d-flex flex-column">
-                <!-- 调整了这里 -->
                 <h5 class="card-title">{{ product.title }}</h5>
                 <p class="card-text flex-grow-1">NTD ${{ product.price }}</p>
-                <!-- 使用flex-grow -->
                 <div class="mt-2 mb-2">
-                  <!-- 确保按钮在底部 -->
                   <router-link
                     :to="`/product/${product.id}`"
                     class="btn btn-outline-secondary w-50 gx-3"

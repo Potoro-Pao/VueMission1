@@ -2,7 +2,6 @@
   <loading v-model:active="isLoading"></loading>
   <div class="container mt-4">
     <div class="container mt-4">
-      <!-- 其他内容 -->
       <div
         aria-live="polite"
         aria-atomic="true"
@@ -23,7 +22,6 @@
       </div>
     </div>
     <div class="container mt-4">
-      <!-- 其他内容 -->
       <div
         aria-live="polite"
         aria-atomic="true"
