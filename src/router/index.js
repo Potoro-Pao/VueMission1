@@ -35,6 +35,10 @@ const routes = [
         path: 'checkorder',
         component: () => import('../views/checkOrderView.vue'),
       },
+      {
+        path: 'success',
+        component: () => import('../views/SuccessView.vue'),
+      },
     ],
   },
   {

@@ -115,7 +115,6 @@
       </div>
     </div>
   </div>
-  <!-- 使用Bootstrap的modal做訂單簡述 -->
   <div
     class="modal right fade"
     ref="orderModal"
@@ -239,7 +238,6 @@ export default {
       this.isLoading = true;
       this.showToast('Order submitted successfully', 'success');
       const api = `${VITE_URL}/api/${VITE_API}/order`;
-      // 假设 `/checkorder` 是您路由配置中的一个有效路径
       axios.post(api, apiFormat).then((res) => {
         this.isLoading = false;
         this.getCart();
@@ -250,7 +248,6 @@ export default {
       });
     },
     onSubmit() {
-      // this.openOrderModal();
       this.sendOrder();
     },
     isPhone(value) {

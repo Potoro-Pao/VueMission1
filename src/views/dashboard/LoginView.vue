@@ -1,7 +1,8 @@
 <template>
+  <BgC></BgC>
   <div class="container">
     <div class="row justify-content-center">
-      <h1 class="h3 mb-3 font-weight-normal text-center">Admin Log in</h1>
+      <h1 class="h3 mb-3 mt-5 font-weight-normal text-center">Admin Log in</h1>
       <div class="col-8">
         <form id="form" class="form-signin" @submit.prevent="loginCheck">
           <div class="form-floating mb-3">
@@ -35,17 +36,17 @@
             class="btn btn-lg btn-primary w-100 mt-3"
             type="button"
           >
-            登入
+            Log in
           </button>
         </form>
       </div>
     </div>
-    <p class="mt-5 mb-3 text-muted text-end">&copy; 2021~∞ - 六角學院</p>
   </div>
 </template>
 
 <script>
 import axios from 'axios';
+import BgC from '../../components/BgComponent.vue';
 
 const { VITE_URL } = import.meta.env;
 
@@ -58,6 +59,9 @@ export default {
         password: null,
       },
     };
+  },
+  components: {
+    BgC,
   },
   methods: {
     loginCheck() {

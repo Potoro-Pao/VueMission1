@@ -2,19 +2,19 @@
   <div class="container">
     <div class="text-end mt-4">
       <button class="btn btn-primary" @click="openModal('new')">
-        建立新的產品
+        Create New Product
       </button>
     </div>
     <table class="table mt-4">
       <thead>
         <tr>
-          <th width="120">分類</th>
-          <th>產品名稱</th>
-          <th>產品圖片</th>
-          <th width="120">原價</th>
-          <th width="120">售價</th>
-          <th width="100">是否啟用</th>
-          <th width="120">編輯</th>
+          <th width="120">Category</th>
+          <th>Product Title</th>
+          <th>Product Image</th>
+          <th width="120">Original Price</th>
+          <th width="120">Sale Price</th>
+          <th width="100">Enabled</th>
+          <th width="120">Edit</th>
         </tr>
       </thead>
       <tbody>
@@ -27,8 +27,8 @@
           <td class="text-end">{{ product.origin_price }}</td>
           <td class="text-end">{{ product.price }}</td>
           <td>
-            <span v-if="product.is_enabled" class="text-success">啟用</span>
-            <span v-else>未啟用</span>
+            <span v-if="product.is_enabled" class="text-success">on</span>
+            <span v-else>off</span>
           </td>
           <td>
             <div class="btn-group">
@@ -37,14 +37,14 @@
                 class="btn btn-outline-primary btn-sm"
                 @click="openModal('edit', product)"
               >
-                編輯
+                Edit
               </button>
               <button
                 type="button"
                 class="btn btn-outline-danger btn-sm"
                 @click="openModal('delete', product)"
               >
-                刪除
+                Del
               </button>
             </div>
           </td>
