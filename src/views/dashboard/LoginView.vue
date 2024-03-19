@@ -38,6 +38,14 @@
           >
             Log in
           </button>
+          <button
+            @click="logBackHome"
+            id="loginBtn"
+            class="btn btn-lg btn-primary w-100 mt-3"
+            type="button"
+          >
+            Back to Home Page
+          </button>
         </form>
       </div>
     </div>
@@ -64,6 +72,9 @@ export default {
     BgC,
   },
   methods: {
+    logBackHome() {
+      this.$router.push('/');
+    },
     loginCheck() {
       const user = {
         username: this.user.account,

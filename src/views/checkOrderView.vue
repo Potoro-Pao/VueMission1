@@ -66,10 +66,10 @@
             id="paymentMethod"
             v-model="selectedPaymentMethod"
           >
-            <option disabled value="">請選擇一個選項</option>
-            <option>信用卡</option>
-            <option>銀行轉帳</option>
-            <option>貨到付款</option>
+            <option disabled value="">Choose a payment method</option>
+            <option>Credit card</option>
+            <option>Bank transfer</option>
+            <option>Pay when you get it (Cash on Delivery)</option>
           </select>
         </div>
         <button

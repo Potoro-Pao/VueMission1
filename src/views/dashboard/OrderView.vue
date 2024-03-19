@@ -1,47 +1,50 @@
 <template>
   <div class="container mt-5">
     <h2>訂單列表</h2>
-    <table class="table">
-      <thead>
-        <tr>
-          <th scope="col">#</th>
-          <th scope="col">Order ID</th>
-          <th scope="col">Created Time</th>
-          <th scope="col">Total Amount</th>
-          <th scope="col">Payment Status</th>
-          <th scope="col">Operation</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-for="(order, index) in orders" :key="order.id">
-          <th scope="row">{{ index + 1 }}</th>
-          <td>{{ order.id }}</td>
-          <td>
-            {{ new Date(order.create_at * 1000).toLocaleDateString('zh-TW') }}
-          </td>
-          <td>$ {{ Math.round(order.total) }}</td>
-          <td :style="{ color: order.is_paid ? 'green' : 'black' }">
-            {{ order.is_paid ? 'Paid' : 'Unpaid' }}
-          </td>
-          <td>
-            <button
-              type="button"
-              class="btn btn-primary"
-              @click="showOrderDetail(order)"
-            >
-              View Detail
-            </button>
-            <button
-              type="button"
-              class="btn btn-danger"
-              @click="prepareDeleteOrder(order.id)"
-            >
-              Delete
-            </button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+    <div class="table-responsive">
+      <!-- Make table scrollable on small screens -->
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">Order ID</th>
+            <th scope="col">Created Time</th>
+            <th scope="col">Total Amount</th>
+            <th scope="col">Payment Status</th>
+            <th scope="col">Operation</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="(order, index) in orders" :key="order.id">
+            <th scope="row">{{ index + 1 }}</th>
+            <td>{{ order.id }}</td>
+            <td>
+              {{ new Date(order.create_at * 1000).toLocaleDateString('zh-TW') }}
+            </td>
+            <td>$ {{ Math.round(order.total) }}</td>
+            <td :style="{ color: order.is_paid ? 'green' : 'red' }">
+              {{ order.is_paid ? 'Paid' : 'Unpaid' }}
+            </td>
+            <td>
+              <button
+                type="button"
+                class="btn btn-primary"
+                @click="showOrderDetail(order)"
+              >
+                View Detail
+              </button>
+              <button
+                type="button"
+                class="btn btn-danger"
+                @click="prepareDeleteOrder(order.id)"
+              >
+                Delete
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   </div>
   <DOM
     :temp-product="tempProduct"
@@ -49,14 +52,12 @@
     :update-product="updateProduct"
     ref="dOrderModal"
   ></DOM>
-
   <DDM
     :selected-order="selectedOrder"
     :delete-product="deleteOrder"
     ref="dModal"
   ></DDM>
 </template>
-
 <script>
 import axios from 'axios';
 import DDM from '../../components/dashboardDelModal.vue';

@@ -5,61 +5,75 @@
         Create New Product
       </button>
     </div>
-    <table class="table mt-4">
-      <thead>
-        <tr>
-          <th width="120">Category</th>
-          <th>Product Title</th>
-          <th>Product Image</th>
-          <th width="120">Original Price</th>
-          <th width="120">Sale Price</th>
-          <th width="100">Enabled</th>
-          <th width="120">Edit</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-for="product in products" :key="product.id">
-          <td>{{ product.category }}</td>
-          <td>{{ product.title }}</td>
-          <td class="text-start">
-            <img width="200px" :src="product.imageUrl" alt="" />
-          </td>
-          <td class="text-end">{{ product.origin_price }}</td>
-          <td class="text-end">{{ product.price }}</td>
-          <td>
-            <span v-if="product.is_enabled" class="text-success">on</span>
-            <span v-else>off</span>
-          </td>
-          <td>
-            <div class="btn-group">
-              <button
-                type="button"
-                class="btn btn-outline-primary btn-sm"
-                @click="openModal('edit', product)"
+    <div class="table-responsive">
+      <!-- Make the table responsive -->
+      <table class="table mt-4">
+        <thead>
+          <tr>
+            <th>Category</th>
+            <th>Product Title</th>
+            <th>Product Image</th>
+            <th>Original Price</th>
+            <th>Sale Price</th>
+            <th>Enabled</th>
+            <th>Edit</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="product in products" :key="product.id">
+            <td>{{ product.category }}</td>
+            <td>{{ product.title }}</td>
+            <td>
+              <img
+                :src="product.imageUrl"
+                alt=""
+                class="img-fluid"
+                style="max-width: 100px"
+              />
+              <!-- Make image responsive -->
+            </td>
+            <td class="text-end">{{ product.origin_price }}</td>
+            <td class="text-end">{{ product.price }}</td>
+            <td>
+              <span
+                :class="{
+                  'text-success': product.is_enabled,
+                  'text-danger': !product.is_enabled,
+                }"
               >
-                Edit
-              </button>
-              <button
-                type="button"
-                class="btn btn-outline-danger btn-sm"
-                @click="openModal('delete', product)"
-              >
-                Del
-              </button>
-            </div>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+                {{ product.is_enabled ? 'on' : 'off' }}
+              </span>
+            </td>
+            <td>
+              <div class="btn-group">
+                <button
+                  type="button"
+                  class="btn btn-outline-primary btn-sm"
+                  @click="openModal('edit', product)"
+                >
+                  Edit
+                </button>
+                <button
+                  type="button"
+                  class="btn btn-outline-danger btn-sm"
+                  @click="openModal('delete', product)"
+                >
+                  Del
+                </button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
     <PagC :pages="pages" :getProduct="getProduct" basePath="/admin" />
   </div>
-  <!-- Modal -->
+  <!-- Modal components -->
   <DPM
     :temp-product="tempProduct"
     :update-product="updateProduct"
     ref="pModal"
   ></DPM>
-
   <DDM
     :temp-product="tempProduct"
     :delete-product="deleteProduct"

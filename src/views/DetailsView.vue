@@ -84,17 +84,25 @@
         >
           Image Gallery
         </h3>
-        <div
-          v-if="product.imagesUrl && product.imagesUrl.length > 0"
-          class="d-flex flex-row"
-        >
-          <div v-for="(image, index) in product.imagesUrl" :key="index">
-            <img
-              :src="image"
-              class="img-fluid mb-2 pe-3"
-              style="height: 300px; object-fit: cover"
-              alt="Product Image"
-            />
+        <div class="row g-3">
+          <div
+            v-if="product.imagesUrl && product.imagesUrl.length > 0"
+            class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3"
+          >
+            <div
+              v-for="(image, index) in product.imagesUrl"
+              :key="index"
+              class="col"
+            >
+              <div class="h-100">
+                <img
+                  :src="image"
+                  class="img-fluid"
+                  style="height: 500px; width: 100%; object-fit: cover"
+                  alt="Product Image"
+                />
+              </div>
+            </div>
           </div>
         </div>
       </div>
