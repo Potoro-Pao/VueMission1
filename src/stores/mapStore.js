@@ -52,8 +52,8 @@ export default defineStore('mapStore', {
             longitude: parseFloat(lon),
           });
         }
-      } catch (error) {
-        console.error('獲取座標失敗:', error);
+      } catch (e) {
+        // console.error('獲取座標失敗:', error);
       }
     },
     async getProducts() {
@@ -62,7 +62,6 @@ export default defineStore('mapStore', {
         const response = await axios.get(api);
         this.products = response.data.products;
       } catch (error) {
-        console.error('獲取產品失敗:', error);
         this.products = [];
       }
     },
@@ -72,8 +71,6 @@ export default defineStore('mapStore', {
         const randomIndex = Math.floor(Math.random() * this.products.length);
         this.bookPhoto = this.products[randomIndex].imageUrl;
         this.bookTitle = this.products[randomIndex].title;
-      } else {
-        // console.log('產品為空值');
       }
     },
   },

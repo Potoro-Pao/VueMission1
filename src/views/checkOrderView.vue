@@ -117,9 +117,7 @@ export default {
           this.isLoading = true;
           this.$router.push('/success');
         })
-        .catch((error) => {
-          console.error('請求失敗:', error);
-        });
+        .catch(() => {});
     },
     getOrderAll() {
       const api = `${VITE_URL}/api/${VITE_API}/orders`;
@@ -133,18 +131,13 @@ export default {
           );
 
           if (order) {
-            console.log(order);
             this.orders = order.products;
             this.ordersTotal = Math.round(order.total);
             this.orderID = order.id;
             this.userData = order.user;
-          } else {
-            console.log('未找到訂單');
           }
         })
-        .catch((error) => {
-          console.error('請求失敗:', error);
-        });
+        .catch(() => {});
     },
 
     searchOrder() {

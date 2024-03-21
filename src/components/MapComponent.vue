@@ -88,7 +88,7 @@ export default {
 
           this.marker.bindPopup(popupContent).openPopup();
         } else {
-          console.error('Map container not found');
+          // console.error('Map container not found');
         }
       });
     },

@@ -98,8 +98,8 @@ export default {
           this.getOrders(); // Refresh the orders list
           this.$refs.dModal.closeDeleteModal(); // Close the DDM modal after successful deletion
         })
-        .catch((error) => {
-          console.error('Error deleting order:', error);
+        .catch(() => {
+          // console.error('Error deleting order:', error);
         });
     },
     getOrders() {

@@ -30,7 +30,6 @@ export default defineStore('cartStore', {
         qty,
       };
       axios.post(api, { data: order }).then(() => {
-        console.log(qty);
         this.getCart();
       });
     },
