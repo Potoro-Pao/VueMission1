@@ -130,6 +130,48 @@
                 </td>
               </tr>
             </tbody>
+            <tfoot>
+          <tr>
+            <td
+              colspan="4"
+              class="text-right font-weight-bold subtotal-total-label"
+            >
+              Subtotal:
+            </td>
+            <td colspan="2" class="text-right subtotal-total-value">
+              ${{ this.total }}
+            </td>
+          </tr>
+          <tr>
+            <td
+              colspan="4"
+              class="text-right font-weight-bold subtotal-total-label"
+            >
+              Total:
+            </td>
+            <td
+              colspan="2"
+              class="text-right font-weight-bold subtotal-total-value"
+            >
+              ${{ this.final_total }}
+            </td>
+          </tr>
+          <tr v-if="this.discount">
+            <td
+              colspan="4"
+              class="text-right font-weight-bold subtotal-total-label"
+            >
+              Discount:
+            </td>
+            <td
+              colspan="2"
+              class="text-right text-success subtotal-total-value"
+            >
+              -$
+              {{ this.discount === 0 ? this.refreshDiscount : this.discount }}
+            </td>
+          </tr>
+        </tfoot>
           </table>
         </div>
       </div>
