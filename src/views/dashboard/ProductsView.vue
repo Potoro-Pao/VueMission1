@@ -140,7 +140,7 @@ export default {
           this.getProduct();
           this.$refs.pModal.closeModal();
         })
-        .catch((err) => console.log(err));
+        .catch(() => {});
     },
     deleteProduct() {
       const api = `${VITE_URL}/api/${VITE_API}/admin/product/${this.tempProduct.id}`;

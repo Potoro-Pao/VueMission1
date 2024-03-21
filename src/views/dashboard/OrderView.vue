@@ -124,7 +124,9 @@ export default {
           this.getOrders();
           this.$refs.dOrderModal.closeModal();
         })
-        .catch((err) => console.log(err));
+        .catch(() => {
+          //
+        });
     },
   },
   mounted() {

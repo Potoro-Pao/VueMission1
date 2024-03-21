@@ -36,7 +36,7 @@ export default defineStore('mapStore', {
           await this.getCountryCoordinates(country, city);
         }
       } catch (error) {
-        console.log(error);
+        //
       }
     },
     async getCountryCoordinates(country, city) {
@@ -73,7 +73,7 @@ export default defineStore('mapStore', {
         this.bookPhoto = this.products[randomIndex].imageUrl;
         this.bookTitle = this.products[randomIndex].title;
       } else {
-        console.log('產品為空值');
+        // console.log('產品為空值');
       }
     },
   },

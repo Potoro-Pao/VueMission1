@@ -1,5 +1,19 @@
 <template>
   <HeaderC></HeaderC>
+  <div class="position-fixed top-0 end-0 p-3" style="z-index: 11">
+    <div
+      id="copyToast"
+      class="toast hide"
+      role="alert"
+      aria-live="assertive"
+      aria-atomic="true"
+    >
+      <div class="toast-body">
+        <!-- Message will be inserted here -->
+      </div>
+    </div>
+  </div>
+
   <div class="container">
     <div class="container mt-5">
       <div class="row">
@@ -156,7 +170,12 @@
                   Limited time offer.
                 </p>
                 <div class="d-flex justify-content-center mt-5">
-                  <button class="btn btn-primary">Copy the Code</button>
+                  <button
+                    @click="copyToClipboard('Reading')"
+                    class="btn btn-primary"
+                  >
+                    Copy the Code
+                  </button>
                 </div>
               </div>
             </div>
@@ -187,7 +206,12 @@
                   Grab this deal before it's gone!
                 </p>
                 <div class="d-flex justify-content-center mt-5">
-                  <button class="btn btn-primary">Copy the Code</button>
+                  <button
+                    @click="copyToClipboard('Literature')"
+                    class="btn btn-primary"
+                  >
+                    Copy the Code
+                  </button>
                 </div>
               </div>
             </div>
@@ -209,6 +233,41 @@ export default {
     SwiperC,
     HeaderC,
   },
-  methods: {},
+  methods: {
+    async copyToClipboard(text) {
+      try {
+        await navigator.clipboard.writeText(text);
+        // 根据文本设置不同的背景色
+        const type = text === 'Reading' ? 'bg-info' : 'bg-primary';
+        this.showToast(`${text} has been copied to clipboard!`, type);
+      } catch (err) {
+        // 复制失败时使用红色背景
+        this.showToast('Failed to copy.', 'bg-danger');
+      }
+    },
+
+    showToast(message, bgClass) {
+      const toastElement = document.getElementById('copyToast');
+      const toastBody = toastElement.querySelector('.toast-body');
+      toastBody.textContent = message;
+      // 先移除所有可能的背景色类和文字颜色类
+      toastElement.classList.remove(
+        'hide',
+        'bg-info',
+        'bg-primary',
+        'bg-danger',
+        'text-white',
+      );
+      toastElement.classList.add('show', bgClass);
+      if (bgClass === 'bg-primary') {
+        toastElement.classList.add('text-white');
+      }
+
+      setTimeout(() => {
+        toastElement.classList.remove('show', bgClass, 'text-white');
+        toastElement.classList.add('hide');
+      }, 3000);
+    },
+  },
 };
 </script>
