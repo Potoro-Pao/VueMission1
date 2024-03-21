@@ -86,7 +86,6 @@
             />
           </div>
           <div class="col-lg-6 d-flex align-items-center">
-            <!-- 文本在大屏幕上将显示在右侧 -->
             <div class="text-center w-100">
               <h4>The Blue Ant trilogy</h4>
               <p class="me-5" style="line-height: 2rem">
@@ -123,6 +122,79 @@
         </div>
       </div>
     </div>
+    <div class="container mt-5">
+      <div class="row">
+        <div class="col-12">
+          <h2>Exclusive Discounts</h2>
+          <div class="row">
+            <div class="col-md-6 mt-3">
+              <div class="coupon-card p-4">
+                <h4 class="coupon-title">20% Off Coupon</h4>
+
+                <div
+                  class="my-5"
+                  style="
+                    width: 100%;
+                    height: 400px;
+                    overflow: hidden;
+                    position: relative;
+                  "
+                >
+                  <img
+                    src="/20Percent.jpg"
+                    alt=""
+                    style="width: 100%; height: 100%; object-fit: cover"
+                  />
+                </div>
+
+                <p>
+                  Use code <strong>Reading</strong> at checkout to get 20% off
+                  your purchase!
+                </p>
+                <p>
+                  Explore a wide range of books and let your imagination soar.
+                  Limited time offer.
+                </p>
+                <div class="d-flex justify-content-center mt-5">
+                  <button class="btn btn-primary">Copy the Code</button>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6 mt-3">
+              <div class="coupon-card p-4">
+                <h4 class="coupon-title">50% Off Coupon</h4>
+                <div
+                  class="my-5"
+                  style="
+                    width: 100%;
+                    height: 400px;
+                    overflow: hidden;
+                    position: relative;
+                  "
+                >
+                  <img
+                    src="/50Percent.jpg"
+                    alt=""
+                    style="width: 100%; height: 100%; object-fit: cover"
+                  />
+                </div>
+                <p>
+                  Use code <strong>Literature</strong> at checkout to get 50%
+                  off your purchase!
+                </p>
+                <p>
+                  Dive into the world of literature with our special selection.
+                  Grab this deal before it's gone!
+                </p>
+                <div class="d-flex justify-content-center mt-5">
+                  <button class="btn btn-primary">Copy the Code</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -137,5 +209,6 @@ export default {
     SwiperC,
     HeaderC,
   },
+  methods: {},
 };
 </script>

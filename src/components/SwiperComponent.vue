@@ -15,7 +15,7 @@
       <swiper-slide>
         <img
           loop
-          src="../../public/poster1.jpg"
+          src="/poster1.jpg"
           alt=""
         />
         <div class="text-overlay">Incoming Big Sale!</div>
@@ -24,7 +24,7 @@
       <swiper-slide>
         <img
           loop
-          src="../../public/poster2.jpg"
+          src="/poster2.jpg"
           alt=""
         />
         <div class="text-overlay">Join Us on Reading Fieldtrip!</div>
@@ -33,7 +33,7 @@
       <swiper-slide>
         <img
           loop
-          src="../../public/poster3.jpg"
+          src="/poster3.jpg"
           alt=""
         />
         <div class="text-overlay">Meet your Favorite Author!</div>
