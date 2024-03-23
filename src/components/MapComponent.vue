@@ -32,6 +32,7 @@ export default {
   },
   async mounted() {
     await this.getProducts();
+    // this.intervalId = setInterval(this.getRandom, 10000); // 每10秒更新一次位置
     this.intervalId = setInterval(async () => {
       await this.getRandom();
       this.updateMap();
@@ -50,10 +51,10 @@ export default {
     latitude: {
       handler(newVal, oldVal) {
         if (!this.map && newVal !== null && this.longitude !== null) {
-          if (this.useExternalLocation) {
+          if (!this.useExternalLocation) {
             this.getRandom();
-            this.getMap();
           }
+          this.getMap();
         } else if (this.map && newVal !== oldVal) {
           this.updateMap();
         }
@@ -112,7 +113,9 @@ export default {
                             </div>`;
       this.marker.getPopup().setContent(popupContent).openPopup();
       if (this.useExternalLocation) {
-        this.resetuseExternalLocation();
+        setTimeout(() => {
+          this.resetuseExternalLocation();
+        }, 10000);
       }
     },
   },
