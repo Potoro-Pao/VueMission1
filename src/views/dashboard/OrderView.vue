@@ -45,6 +45,7 @@
         </tbody>
       </table>
     </div>
+    <PagC :pages="pages" :getProduct="getOrders" basePath="/admin" />
   </div>
   <DOM
     :temp-product="tempProduct"
@@ -62,6 +63,7 @@
 import axios from 'axios';
 import DDM from '../../components/dashboardDelModal.vue';
 import DOM from '../../components/dashboardOrderModal.vue';
+import PagC from '../../components/PaginationComponent.vue';
 
 const { VITE_URL, VITE_API } = import.meta.env;
 export default {
@@ -79,11 +81,13 @@ export default {
         },
       },
       tempProduct: {},
+      pages: {},
     };
   },
   components: {
     DDM,
     DOM,
+    PagC,
   },
   methods: {
     prepareDeleteOrder(orderId) {
@@ -99,13 +103,13 @@ export default {
           this.$refs.dModal.closeDeleteModal(); // Close the DDM modal after successful deletion
         })
         .catch(() => {
-          // console.error('Error deleting order:', error);
         });
     },
-    getOrders() {
-      const api = `${VITE_URL}/api/${VITE_API}/admin/orders`;
+    getOrders(page = 1) {
+      const api = `${VITE_URL}/api/${VITE_API}/admin/orders?page=${page}`;
       axios.get(api).then((res) => {
         this.orders = res.data.orders;
+        this.pages = res.data.pagination;
       });
     },
     showOrderDetail(clickedOrder) {

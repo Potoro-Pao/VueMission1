@@ -2,14 +2,14 @@
   <nav aria-label="...">
     <ul class="pagination">
       <li class="page-item" :class="{ disabled: !pages.has_pre }">
-        <router-link
+        <a
           class="page-link"
-          :to="{
+          :href="{
             path: basePath + '/products',
             query: { page: pages.current_page - 1 },
           }"
           @click.prevent="getProduct(pages.current_page - 1)"
-          >Previous</router-link
+          >Previous</a
         >
       </li>
       <li
@@ -27,14 +27,14 @@
       </li>
 
       <li class="page-item" :class="{ disabled: !pages.has_next }">
-        <router-link
+        <a
           class="page-link"
-          :to="{
+          :href="{
             path: basePath + '/products',
             query: { page: pages.current_page + 1 },
           }"
           @click.prevent="getProduct(pages.current_page + 1)"
-          >Next</router-link
+          >Next</a
         >
       </li>
     </ul>
