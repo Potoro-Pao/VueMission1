@@ -132,7 +132,6 @@ export default {
   },
   methods: {
     formated(format) {
-      // console.log(format);
       this.format = JSON.parse(format);
     },
 
@@ -141,7 +140,6 @@ export default {
       const { id } = this.$route.params;
       axios.get(`${VITE_URL}/api/${VITE_API}/product/${id}`).then((res) => {
         this.product = res.data.product;
-        // console.log(this.product);
         this.formated(this.product.description);
       });
     },

@@ -87,6 +87,8 @@
 <script>
 import Loading from 'vue-loading-overlay';
 import axios from 'axios';
+import { mapActions } from 'pinia';
+import mapStore from '../stores/mapStore';
 
 const { VITE_URL, VITE_API } = import.meta.env;
 
@@ -103,21 +105,36 @@ export default {
       ordersTotal: 0,
       checkoutOrderID: '',
       orderID: '',
+      userCountryCity: { country: '', city: '' },
     };
   },
   components: {
     Loading,
   },
   methods: {
+    ...mapActions(mapStore, [
+      'setLocationFromExternal',
+      'setBookPhotoFromExternal',
+    ]),
     confirmOrder() {
       const api = `${VITE_URL}/api/${VITE_API}/pay/${this.orderID}`;
       axios
         .post(api)
         .then(() => {
           this.isLoading = true;
+          const bookInfo = this.randomPhoto(this.orders);
+          this.setLocationFromExternal(this.userCountryCity, bookInfo[0], bookInfo[1]);
           this.$router.push('/success');
         })
         .catch(() => {});
+    },
+    randomPhoto(orders) {
+      const ids = Object.keys(orders);
+      const randomIndex = Math.floor(Math.random() * ids.length);
+      const randomId = ids[randomIndex];
+      const productTitle = orders[randomId].product.title;
+      const productPhoto = orders[randomId].product.imageUrl;
+      return [productTitle, productPhoto];
     },
     getOrderAll() {
       const api = `${VITE_URL}/api/${VITE_API}/orders`;
@@ -155,6 +172,8 @@ export default {
   created() {
     if (this.$route.query.data) {
       this.checkoutData = JSON.parse(this.$route.query.data);
+      this.userCountryCity.city = this.$route.query.city;
+      this.userCountryCity.country = this.$route.query.country;
     }
   },
   mounted() {

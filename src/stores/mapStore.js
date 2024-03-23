@@ -12,6 +12,7 @@ export default defineStore('mapStore', {
     bookPhoto: null,
     bookTitle: null,
     products: null,
+    useExternalLocation: false,
   }),
   actions: {
     updateLocation({
@@ -24,11 +25,9 @@ export default defineStore('mapStore', {
     },
     async getRandom() {
       try {
-        // 確保產品加載
         if (!this.products) {
           await this.getProducts();
         }
-        // 產品以加載可以繼續隨機選取產品
         this.getRandomBooks();
         const res = await axios.get('https://randomuser.me/api/');
         if (res.data && res.data.results && res.data.results.length > 0) {
@@ -64,6 +63,23 @@ export default defineStore('mapStore', {
       } catch (error) {
         this.products = [];
       }
+    },
+    async setLocationFromExternal({ country, city }, bookTitle, bookPhoto) {
+      this.useExternalLocation = true;
+      this.country = country;
+      this.city = city;
+      await this.setBookPhoto(bookTitle, bookPhoto);
+      await this.getCountryCoordinates(country, city);
+      await this.getCountryCoordinates(country, city);
+    },
+    async setBookPhoto(goodsTitle, goodsPhoto) {
+      this.bookTitle = goodsTitle;
+      this.bookPhoto = goodsPhoto;
+    },
+    resetuseExternalLocation() {
+      setTimeout(() => {
+        this.useExternalLocation = false;
+      }, 500);
     },
 
     getRandomBooks() {

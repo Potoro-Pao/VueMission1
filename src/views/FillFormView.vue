@@ -243,7 +243,11 @@ export default {
         this.getCart();
         this.$router.push({
           path: '/checkorder',
-          query: { data: JSON.stringify(res.data) },
+          query: {
+            data: JSON.stringify(res.data),
+            city: this.user.city,
+            country: this.user.country,
+          },
         });
       });
     },

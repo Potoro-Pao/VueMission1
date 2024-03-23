@@ -20,6 +20,7 @@ export default {
       'bookPhoto',
       'bookTitle',
       'products',
+      'useExternalLocation',
     ]),
   },
   data() {
@@ -31,7 +32,6 @@ export default {
   },
   async mounted() {
     await this.getProducts();
-    // this.intervalId = setInterval(this.getRandom, 10000); // 每10秒更新一次位置
     this.intervalId = setInterval(async () => {
       await this.getRandom();
       this.updateMap();
@@ -50,8 +50,10 @@ export default {
     latitude: {
       handler(newVal, oldVal) {
         if (!this.map && newVal !== null && this.longitude !== null) {
-          this.getRandom();
-          this.getMap();
+          if (this.useExternalLocation) {
+            this.getRandom();
+            this.getMap();
+          }
         } else if (this.map && newVal !== oldVal) {
           this.updateMap();
         }
@@ -60,7 +62,11 @@ export default {
     },
   },
   methods: {
-    ...mapActions(mapStore, ['getRandom', 'getProducts']),
+    ...mapActions(mapStore, [
+      'getRandom',
+      'getProducts',
+      'resetuseExternalLocation',
+    ]),
 
     getMap() {
       this.$nextTick(() => {
@@ -105,6 +111,9 @@ export default {
                             </div>
                             </div>`;
       this.marker.getPopup().setContent(popupContent).openPopup();
+      if (this.useExternalLocation) {
+        this.resetuseExternalLocation();
+      }
     },
   },
 };
