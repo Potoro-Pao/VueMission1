@@ -1,0 +1,1 @@
+import{_ as e,o as t,c as o,a as s}from"./index-UaBsPtZV.js";const c={},n={class:"container"},a=s("div",{class:"centered-content",style:{"font-size":"50px"}}," Under Repairment... ",-1),r=[a];function _(i,d){return t(),o("div",n,r)}const l=e(c,[["render",_]]);export{l as default};
