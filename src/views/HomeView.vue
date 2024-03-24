@@ -20,7 +20,7 @@
           <h2>Search Your Order</h2>
           <div class="input-group my-3">
             <input
-              v-model="orderID"
+              v-model.trim="orderID"
               type="text"
               class="form-control me-3"
               placeholder="Enter Order Number"
@@ -267,18 +267,36 @@ export default {
   },
   methods: {
     getOrder() {
-      const api = `${VITE_URL}/api/${VITE_API}/order/${this.orderID}`;
-      axios.get(api).then((res) => {
-        this.isLoading = false;
-        this.checkoutData = res.data.order;
-        this.$router.push({
-          path: '/checkorder',
-          query: {
-            data: JSON.stringify(this.checkoutData),
-          },
+      const api = `${VITE_URL}/api/${VITE_API}/order/${this.orderID.trim()}`;
+      axios
+        .get(api)
+        .then((res) => {
+          this.isLoading = false;
+          // 正常情況
+          if (res.data.order && Object.keys(res.data.order).length > 0) {
+            this.checkoutData = res.data.order;
+            this.$router
+              .push({
+                path: '/checkorder',
+                query: {
+                  data: JSON.stringify(this.checkoutData),
+                },
+              })
+              .catch(() => {});
+          } else {
+            // 若返回空值(未找到訂單不可以跳轉)
+            this.showToast(
+              'Order not found. Please enter the correct Order Number.',
+              'bg-danger',
+            );
+          }
+        })
+        .catch(() => {
+          // 如果後端返回錯誤或網路錯誤
+          this.showToast('An error occurred. Please try again.', 'bg-danger');
         });
-      });
     },
+
     async copyToClipboard(text) {
       try {
         await navigator.clipboard.writeText(text);
@@ -302,6 +320,9 @@ export default {
       );
       toastElement.classList.add('show', bgClass);
       if (bgClass === 'bg-primary') {
+        toastElement.classList.add('text-white');
+      }
+      if (bgClass === 'bg-danger') {
         toastElement.classList.add('text-white');
       }
 
