@@ -13,8 +13,32 @@
       </div>
     </div>
   </div>
-
   <div class="container">
+    <div class="container mt-5">
+      <div class="row">
+        <div class="col-md-12">
+          <h2>Search Your Order</h2>
+          <div class="input-group my-3">
+            <input
+              v-model="orderID"
+              type="text"
+              class="form-control me-3"
+              placeholder="Enter Order Number"
+              aria-label="Order Number"
+              aria-describedby="button-addon2"
+            />
+            <button
+              @click="getOrder"
+              class="btn btn-outline-secondary"
+              type="button"
+              id="button-addon2"
+            >
+              Search
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
     <div class="container mt-5">
       <div class="row">
         <div class="col-md-6">
@@ -64,7 +88,6 @@
           </div>
         </div>
       </div>
-
       <div class="container mt-5">
         <div class="row mb-5"><h2>Bestselling Books</h2></div>
         <div class="row">
@@ -223,25 +246,48 @@
 </template>
 
 <script>
+import axios from 'axios';
 import MapC from '../components/MapComponent.vue';
 import SwiperC from '../components/SwiperComponent.vue';
 import HeaderC from '../components/HeaderComponent.vue';
 
+// import Loading from 'vue-loading-overlay';
+
+const { VITE_URL, VITE_API } = import.meta.env;
+
 export default {
+  data() {
+    return {
+      orderID: '',
+      checkoutData: '',
+    };
+  },
   components: {
     MapC,
     SwiperC,
     HeaderC,
   },
   methods: {
+    getOrder() {
+      const api = `${VITE_URL}/api/${VITE_API}/order/${this.orderID}`;
+      axios.get(api).then((res) => {
+        this.isLoading = false;
+        console.log(res.data.order);
+        this.checkoutData = res.data.order;
+        this.$router.push({
+          path: '/checkorder',
+          query: {
+            data: JSON.stringify(this.checkoutData),
+          },
+        });
+      });
+    },
     async copyToClipboard(text) {
       try {
         await navigator.clipboard.writeText(text);
-        // 根据文本设置不同的背景色
         const type = text === 'Reading' ? 'bg-info' : 'bg-primary';
         this.showToast(`${text} has been copied to clipboard!`, type);
       } catch (err) {
-        // 复制失败时使用红色背景
         this.showToast('Failed to copy.', 'bg-danger');
       }
     },
@@ -250,7 +296,6 @@ export default {
       const toastElement = document.getElementById('copyToast');
       const toastBody = toastElement.querySelector('.toast-body');
       toastBody.textContent = message;
-      // 先移除所有可能的背景色类和文字颜色类
       toastElement.classList.remove(
         'hide',
         'bg-info',

@@ -52,7 +52,7 @@ export default defineStore('mapStore', {
           });
         }
       } catch (e) {
-        // console.error('獲取座標失敗:', error);
+        //
       }
     },
     async getProducts() {

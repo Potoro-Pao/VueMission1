@@ -230,7 +230,11 @@ export default {
             name: this.user.name,
             email: this.user.email,
             tel: this.user.tel,
-            address: this.user.address,
+            address: JSON.stringify({
+              address: this.user.address,
+              country: this.user.country,
+              city: this.user.city,
+            }),
           },
           message: this.user.message,
         },
@@ -245,8 +249,6 @@ export default {
           path: '/checkorder',
           query: {
             data: JSON.stringify(res.data),
-            city: this.user.city,
-            country: this.user.country,
           },
         });
       });

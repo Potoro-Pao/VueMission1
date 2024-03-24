@@ -94,8 +94,6 @@ export default {
                             </div>`;
 
           this.marker.bindPopup(popupContent).openPopup();
-        } else {
-          // console.error('Map container not found');
         }
       });
     },

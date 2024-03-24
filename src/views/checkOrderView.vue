@@ -59,8 +59,8 @@
             <p class="card-text text-success">Total: {{ this.ordersTotal }}</p>
           </div>
         </div>
-        <div class="mt-3">
-          <label for="paymentMethod" class="form-label">付款方式</label>
+        <div class="mt-3" v-if="!this.is_paid">
+          <label for="paymentMethod" class="form-label">Payment Methods</label>
           <select
             class="form-select"
             id="paymentMethod"
@@ -71,14 +71,19 @@
             <option>Bank transfer</option>
             <option>Pay when you get it (Cash on Delivery)</option>
           </select>
+          <button
+            class="btn btn-primary mt-3"
+            :disabled="!selectedPaymentMethod"
+            @click="confirmOrder"
+          >
+            Confirm Payment
+          </button>
         </div>
-        <button
-          class="btn btn-primary mt-3"
-          :disabled="!selectedPaymentMethod"
-          @click="confirmOrder"
-        >
-          Confirm Payment
-        </button>
+        <div v-else>
+          <p class="text-danger" style="font-size: 30px">
+            Your shipment is on the road.
+          </p>
+        </div>
       </div>
     </div>
   </div>
@@ -95,6 +100,7 @@ const { VITE_URL, VITE_API } = import.meta.env;
 export default {
   data() {
     return {
+      is_paid: false,
       selectedPaymentMethod: '',
       isLoading: true,
       checkoutData: {},
@@ -123,7 +129,11 @@ export default {
         .then(() => {
           this.isLoading = true;
           const bookInfo = this.randomPhoto(this.orders);
-          this.setLocationFromExternal(this.userCountryCity, bookInfo[0], bookInfo[1]);
+          this.setLocationFromExternal(
+            this.userCountryCity,
+            bookInfo[0],
+            bookInfo[1],
+          );
           this.$router.push('/success');
         })
         .catch(() => {});
@@ -144,7 +154,8 @@ export default {
           this.isLoading = false;
           this.orders = res.data.orders;
           const order = this.orders.find(
-            (e) => e.id === this.checkoutData.orderId,
+            (e) => e.id === (this.checkoutData.orderId || this.checkoutData.id),
+
           );
 
           if (order) {
@@ -152,6 +163,9 @@ export default {
             this.ordersTotal = Math.round(order.total);
             this.orderID = order.id;
             this.userData = order.user;
+            this.userCountryCity.country = JSON.parse(this.userData.address).country;
+            this.userCountryCity.city = JSON.parse(this.userData.address).city;
+            this.userData.address = JSON.parse(this.userData.address).address;
           }
         })
         .catch(() => {});
@@ -163,6 +177,9 @@ export default {
         this.isLoading = false;
         this.orders = res.data.order.products;
         this.userData = res.data.order.user;
+        this.userCountryCity.country = JSON.parse(this.userData.address).country;
+        this.userCountryCity.city = JSON.parse(this.userData.address).city;
+        this.userData.address = JSON.parse(this.orders.address).address;
         this.ordersTotal = Math.round(res.data.order.total);
         this.checkoutOrderID = res.data.order.id;
         this.orderID = res.data.order.id;
@@ -172,14 +189,12 @@ export default {
   created() {
     if (this.$route.query.data) {
       this.checkoutData = JSON.parse(this.$route.query.data);
-      this.userCountryCity.city = this.$route.query.city;
-      this.userCountryCity.country = this.$route.query.country;
     }
   },
   mounted() {
     this.isLoading = false;
-    this.checkoutOrderID = this.checkoutData.orderId;
-    this.orderID = this.checkoutData.orderId;
+    this.checkoutOrderID = this.checkoutData.orderId || this.checkoutData.id;
+    this.orderID = this.checkoutData.orderId || this.checkoutData.id;
     this.getOrderAll();
   },
 };
@@ -187,8 +202,7 @@ export default {
 
 <style scoped>
 .card {
-  /* 調整卡片的最大高度 */
   max-height: 400px;
-  overflow-y: auto; /* 添加滾動條以適應內容 */
+  overflow-y: auto;
 }
 </style>
