@@ -153,9 +153,9 @@ export default {
         .then((res) => {
           this.isLoading = false;
           this.orders = res.data.orders;
+          this.is_paid = this.orders[0].is_paid;
           const order = this.orders.find(
             (e) => e.id === (this.checkoutData.orderId || this.checkoutData.id),
-
           );
 
           if (order) {
