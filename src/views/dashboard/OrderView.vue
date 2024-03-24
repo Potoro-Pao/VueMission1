@@ -1,8 +1,13 @@
 <template>
+    <loading v-model:active="isLoading"></loading>
   <div class="container mt-5">
-    <h2>訂單列表</h2>
+    <h2>Order List</h2>
     <div class="table-responsive">
-      <!-- Make table scrollable on small screens -->
+      <div class="text-end mb-5">
+        <button @click="removeAllOrders" class="btn btn-danger">
+          Remove All Orders
+        </button>
+      </div>
       <table class="table">
         <thead>
           <tr>
@@ -61,6 +66,7 @@
 </template>
 <script>
 import axios from 'axios';
+import Loading from 'vue-loading-overlay';
 import DDM from '../../components/dashboardDelModal.vue';
 import DOM from '../../components/dashboardOrderModal.vue';
 import PagC from '../../components/PaginationComponent.vue';
@@ -69,6 +75,7 @@ const { VITE_URL, VITE_API } = import.meta.env;
 export default {
   data() {
     return {
+      isLoading: false,
       orders: [],
       modal: null,
       selectedOrder: {
@@ -88,8 +95,20 @@ export default {
     DDM,
     DOM,
     PagC,
+    Loading,
   },
   methods: {
+    removeAllOrders() {
+      this.isLoading = true;
+      const api = `${VITE_URL}/api/${VITE_API}/admin/orders/all`;
+      axios
+        .delete(api)
+        .then(() => {
+          this.isLoading = false;
+          this.getOrders();
+        })
+        .catch(() => {});
+    },
     prepareDeleteOrder(orderId) {
       this.tempProduct.id = orderId;
       this.$refs.dModal.openDeleteModal();
@@ -102,8 +121,7 @@ export default {
           this.getOrders(); // Refresh the orders list
           this.$refs.dModal.closeDeleteModal(); // Close the DDM modal after successful deletion
         })
-        .catch(() => {
-        });
+        .catch(() => {});
     },
     getOrders(page = 1) {
       const api = `${VITE_URL}/api/${VITE_API}/admin/orders?page=${page}`;

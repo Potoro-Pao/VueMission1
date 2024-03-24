@@ -251,8 +251,6 @@ import MapC from '../components/MapComponent.vue';
 import SwiperC from '../components/SwiperComponent.vue';
 import HeaderC from '../components/HeaderComponent.vue';
 
-// import Loading from 'vue-loading-overlay';
-
 const { VITE_URL, VITE_API } = import.meta.env;
 
 export default {
@@ -272,7 +270,6 @@ export default {
       const api = `${VITE_URL}/api/${VITE_API}/order/${this.orderID}`;
       axios.get(api).then((res) => {
         this.isLoading = false;
-        console.log(res.data.order);
         this.checkoutData = res.data.order;
         this.$router.push({
           path: '/checkorder',
